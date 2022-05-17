@@ -11,6 +11,7 @@ const settingRouter = require('./routes/setting/setting')
 const regionRouter = require('./routes/region/region')
 const studentRouter = require('./routes/student/student')
 const studyRouter = require('./routes/study/study')
+const toolRouter = require('./routes/tool/tool')
 const userRouter = require('./routes/user/user')
 const websiteRouter = require('./routes/website/website')
 
@@ -34,6 +35,7 @@ app.use('/api/region', regionRouter);
 app.use('/api/setting', settingRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/study', studyRouter);
+app.use('/api/tool', toolRouter);
 app.use('/api/user', userRouter);
 app.use('/api/website', websiteRouter);
 
