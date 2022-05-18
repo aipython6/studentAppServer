@@ -25,8 +25,7 @@ class authImpl {
             t.isAuth = true
             t.student = result.map(e => {
               return {
-                sid: e.sid, openid: e.openid, username: e.username,
-                age: e.age, nickName: e.nickName, gender: e.gender,
+                sid: e.sid, username: e.username, age: e.age, nickName: e.nickName, gender: e.gender,
                 email: e.email, professional: e.professional, school: e.school,
                 avatarUrl: e.avatarUrl, birthday: e.birthday, isFull: e.isFull === 0 ? false : true
               }

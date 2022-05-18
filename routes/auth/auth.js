@@ -24,7 +24,7 @@ router.get('/getinfo', async (req, res, next) => {
   const { openid } = req.query
   const authservice = new authService()
   const { student } = await authservice.queryStudentByOpenid({ openid: openid })
-  res.json({ code: 200, content: student })
+  res.json({ code: 200, content: student[0] })
 })
 
 module.exports = router;
