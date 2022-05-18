@@ -28,6 +28,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+  const url = req.url
+  // 放行登录操作
+  const whiteList = ['/auth/login']
+  if (whiteList.includes(url)) {
+    return next()
+  } else {
+    const sessionKey = req.headers.authorization
+    const openid = req.headers.openid
+    if (!(sessionKey && openid)) {
+      res.json({ code: 200, msg: '您还未授权登录,请先授权登录' })
+    } else {
+      return next()
+    }
+  }
+})
+
+
 app.use('/auth', authRouter);
 app.use('/api/book', bookRouter);
 app.use('/api/project', projectRouter);

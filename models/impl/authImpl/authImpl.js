@@ -14,5 +14,30 @@ class authImpl {
       })	
     })
   }
+  // 根据openid查询该用户是否为第一次授权
+  queryStudentByOpenid({ openid }) {
+    const sql = `SELECT * FROM students WHERE openid = '${openid}'`
+    return new Promise((resolve, reject)  => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          let t = { isAuth: false, student: '' }
+          if (result.length > 0) {
+            t.isAuth = true
+            t.student = result.map(e => {
+              return {
+                sid: e.sid, openid: e.openid, username: e.username,
+                age: e.age, nickName: e.nickName, gender: e.gender,
+                email: e.email, professional: e.professional, school: e.school,
+                avatarUrl: e.avatarUrl, birthday: e.birthday, isFull: e.isFull === 0 ? false : true
+              }
+            })
+          }
+          resolve(t)
+        } else {
+          reject(err)
+        }
+      })	
+    })
+  }
 }
 module.exports = authImpl
