@@ -37,9 +37,9 @@ router.put('/editUserinfo', async (req, res) => {
   }
   const result = await authservice.editUserinfo(update_item)
   if (result) {
-    res.json({ code: 200, msg: '更新个人信息成功' })
+    res.json({ code: 200, msg: '更新信息成功' })
   } else {
-    res.json({ code: 200, msg: '更新个人信息失败' })
+    res.json({ code: 200, msg: '更新信息失败' })
   }
 })
 
