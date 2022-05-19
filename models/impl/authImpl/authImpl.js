@@ -38,5 +38,20 @@ class authImpl {
       })	
     })
   }
+
+  // 根据openid学生更新个人基本信息
+  editUserinfo(data) {
+    const { openid, username, age, gender, school, professional, birthday, email, update_time } = data
+    const sql = `update students set username = '${username}', age = ${age}, gender = '${gender}', school = '${school}', professional = '${professional}', birthday = '${birthday}', email = '${email}', update_time = '${update_time}', isFull = 1 where openid = '${openid}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 module.exports = authImpl

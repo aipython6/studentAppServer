@@ -10,6 +10,9 @@ class authService {
   queryStudentByOpenid(data) {
     return this.authImpl.queryStudentByOpenid(data)
   }
+  editUserinfo(data) {
+    return this.authImpl.editUserinfo(data)
+  }
 }
 
 module.exports = authService

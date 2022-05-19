@@ -27,4 +27,20 @@ router.get('/getinfo', async (req, res, next) => {
   res.json({ code: 200, content: student[0] })
 })
 
+router.put('/editUserinfo', async (req, res) => {
+  const { openid, username, age, gender, birthday, school, professional, email } = req.body
+  const authservice = new authService()
+  const update_item = {
+    openid: openid, username: username, age: age,
+    gender: gender, birthday: birthday, school: school,
+    professional: professional, email: email, update_time: handleDate(new Date())
+  }
+  const result = await authservice.editUserinfo(update_item)
+  if (result) {
+    res.json({ code: 200, msg: '更新个人信息成功' })
+  } else {
+    res.json({ code: 200, msg: '更新个人信息失败' })
+  }
+})
+
 module.exports = router;
