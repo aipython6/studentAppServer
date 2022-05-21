@@ -1,4 +1,4 @@
-const mysqlConnect = require('../../../database/mysql_config')
+const mysqlConnect = require('../../database/mysql_config')
 
 class authImpl {
   // 添加一个授权的用户

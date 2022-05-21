@@ -3,9 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const token = require('./utils/token')
 
 const authRouter = require('./routes/auth/auth')
 const bookRouter = require('./routes/book/book')
+const deptRouter = require('./routes/dept/dept')
 const projectRouter = require('./routes/project/project')
 const settingRouter = require('./routes/setting/setting')
 const regionRouter = require('./routes/region/region')
@@ -28,11 +30,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   const url = req.url
-  // 放行登录操作
-  const whiteList = ['/auth/login']
-  if (whiteList.includes(url)) {
+  // PC端放行登录操作
+  const pc_whiteList = ['/api/user/login']
+  if (pc_whiteList.includes(url)) {
+    return next()
+  } else {
+    const t = req.headers.authorization
+    const username = req.headers.username
+    if (t && username) {
+      if (!(await token.verify(t, username))) {
+        res.json({ code: statusCode.tokenVerifyError, msg: 'token验证失败' })
+      } else {
+        return next()
+      }
+    }
+  }
+  // 微信端放行登录操作
+  const wx_whiteList = ['/auth/login']
+  if (wx_whiteList.includes(url)) {
     return next()
   } else {
     const sessionKey = req.headers.authorization
@@ -48,6 +65,7 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRouter);
 app.use('/api/book', bookRouter);
+app.use('/api/dept', deptRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/region', regionRouter);
 app.use('/api/setting', settingRouter);

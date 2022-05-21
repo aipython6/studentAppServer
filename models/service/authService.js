@@ -1,4 +1,4 @@
-const authImpl = require('../impl/authImpl/authImpl')
+const authImpl = require('../impl/authImpl')
 
 class authService {
   constructor() {
