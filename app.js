@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const token = require('./utils/token')
+const cors = require('cors');
+const cors_instance = require('./utils/cors')
 
 const authRouter = require('./routes/auth/auth')
 const bookRouter = require('./routes/book/book')
@@ -14,6 +16,7 @@ const regionRouter = require('./routes/region/region')
 const studentRouter = require('./routes/student/student')
 const studyRouter = require('./routes/study/study')
 const toolRouter = require('./routes/tool/tool')
+const topProjectRouter = require('./routes/topProject/topProject')
 const userRouter = require('./routes/user/user')
 const websiteRouter = require('./routes/website/website')
 
@@ -24,6 +27,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors(cors_instance.getCorsOptions()))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -72,6 +76,7 @@ app.use('/api/setting', settingRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/study', studyRouter);
 app.use('/api/tool', toolRouter);
+app.use('/api/topProject', topProjectRouter);
 app.use('/api/user', userRouter);
 app.use('/api/website', websiteRouter);
 
