@@ -10,7 +10,7 @@ router.get('/all', async (req, res) => {
   const items = content.map(item => {
     return {
       btid: item.btid, sid: item.sid, name: item.name, pname: item.pname,
-      create_time: item.create_time, enabled: item.enabled === 1 ? true : false,
+      create_time: handleDate(item.create_time), enabled: item.enabled === 1 ? true : false,
       create_by: item.create_by, bgColor: item.bgColor
     }
   })

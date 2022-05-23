@@ -2,7 +2,7 @@ const mysqlConnect = require('../../database/mysql_config')
 
 class bookListImpl {
   all({ page, size }) {
-    const sql = `select a.*, b.name as pname from bookList a left join bookType b on a.btid=b.blid ORDER BY a.create_time DESC`
+    const sql = `select a.*, b.name as pname from bookList a left join bookType b on a.btid=b.btid ORDER BY a.create_time DESC`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {

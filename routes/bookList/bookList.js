@@ -1,7 +1,29 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs')
+const path = require('path')
+const { v4: uuidv4 } = require('uuid')
 const bookListService = require('../../models/service/bookListService')
 const { handleDate } = require('../../utils/handleDate')
+const URL = require('../../utils/url')
+
+const upload = require('../../utils/postFile')
+const uploadObj = upload.postCoverImg()
+// 课本封面上传
+router.post('/upload', uploadObj.array('file'), async (req, res) => {
+  const uploadUrl = URL.coverImgUpload
+  const downloadUrl = URL.coverImgDownload
+  const files = req.files
+  const temp = files.map(e => {
+    const uuid = uuidv4()
+    const basename = path.basename(e.path)
+    const suffix = path.basename(e.path)
+    const newname = uuid + suffix
+    fs.rename(uploadUrl + basename, uploadUrl + newname, err => {})
+    return { url: downloadUrl + newname }
+  })
+  res.json({ code: 200, content: temp[0], msg: '上传成功' })
+})
 
 router.get('/all', async (req, res) => {
   const { page, limit } = req.query
@@ -12,7 +34,7 @@ router.get('/all', async (req, res) => {
       btid: item.btid, blid: item.blid, name: item.name, 
       author: item.author, publishedName: item.publishedName, ISBN: item.ISBN,
       coverImg: item.coverImg, clickNum: item.clickNum,
-      pname: item.pname, create_time: item.create_time,
+      pname: item.pname, create_time: handleDate(item.create_time),
       enabled: item.enabled === 1 ? true : false,
       create_by: item.create_by
     }
@@ -27,7 +49,7 @@ router.post('/add', async (req, res) => {
   const insert_item = {
     name: name, enabled: enabled === true ? 1 : 0, create_time: handleDate(new Date()),
     update_time: handleDate(new Date()), create_by: create_by, author: author,
-    btid: btid, ISBN: ISBN, coverImg: coverImg, publishedName: publishedName
+    btid: btid, ISBN: ISBN, coverImg: coverImg, publishedName: publishedName, clickNum: 0
   }
   const result = await booklistService.add(insert_item)
   if (result.affectedRows > 0) {
@@ -83,4 +105,4 @@ router.post('/blurry', async (req, res) => {
   res.json({ code: 200, content: items, total: total })
 })
 
-module.exports = bookListService
+module.exports = router

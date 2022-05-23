@@ -64,10 +64,10 @@ class secondProjectImpl {
 
   // 根据name或create_time查询
   queryByBlur({ name, create_time=[], page, size }) {
-    let sql = `select a.*, b.name as pname from secondProject a left join topProject b on a.sid=b.tid `
+    let sql = `select a.*, b.name as pname from secondProject a left join topProject b on a.tid=b.tid `
     if(name || (create_time.length > 0)) {
       if (name) {
-        sql += `where a.name = '${name}'`  
+        sql += `where a.name like %'${name}'%`  
       } else if (create_time.length > 0){
         const s = create_time[0] + ' :00:00:00'
         const e = create_time[1] + '23:59:59'

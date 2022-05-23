@@ -48,7 +48,7 @@ app.use(async (req, res, next) => {
     const username = req.headers.username
     if (t && username) {
       if (!(await token.verify(t, username))) {
-        res.json({ code: statusCode.tokenVerifyError, msg: 'token验证失败' })
+        res.json({ code: 200, msg: 'token验证失败' })
       } else {
         return next()
       }
