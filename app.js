@@ -8,11 +8,14 @@ const cors = require('cors');
 const cors_instance = require('./utils/cors')
 
 const authRouter = require('./routes/auth/auth')
-const bookRouter = require('./routes/book/book')
+const bookDetailRouter = require('./routes/bookDetail/bookDetail')
+const bookListRouter = require('./routes/bookList/bookList')
+const bookTypeRouter = require('./routes/bookType/bookType')
 const deptRouter = require('./routes/dept/dept')
 const projectRouter = require('./routes/project/project')
 const settingRouter = require('./routes/setting/setting')
 const regionRouter = require('./routes/region/region')
+const secondProjectRouter = require('./routes/secondProject/secondProject')
 const studentRouter = require('./routes/student/student')
 const studyRouter = require('./routes/study/study')
 const toolRouter = require('./routes/tool/tool')
@@ -68,10 +71,13 @@ app.use(async (req, res, next) => {
 
 
 app.use('/auth', authRouter);
-app.use('/api/book', bookRouter);
+app.use('/api/bookDetail', bookDetailRouter);
+app.use('/api/bookList', bookListRouter);
+app.use('/api/bookType', bookTypeRouter);
 app.use('/api/dept', deptRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/region', regionRouter);
+app.use('/api/secondProject', secondProjectRouter);
 app.use('/api/setting', settingRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/study', studyRouter);

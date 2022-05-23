@@ -15,5 +15,8 @@ class topProjectService {
   del(id) {
     return this.topProjectImpl.del(id)
   }
+  queryByBlur(data) {
+    return this.topProjectImpl.queryByBlur(data)
+  }
 }
 module.exports = topProjectService

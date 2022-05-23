@@ -1,9 +1,8 @@
 const mysqlConnect = require('../../database/mysql_config')
-class topProjectImpl {
-  // 获取所有数据
-  all(params) {
-    const { page, size } = params
-    const sql = `SELECT * FROM topProject ORDER BY create_time DESC`
+
+class secondProjectImpl {
+  all({ page, size }) {
+    const sql = `select a.*, b.name as pname from secondProject a left join topProject b on a.tid=b.tid ORDER BY a.create_time DESC`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -20,10 +19,9 @@ class topProjectImpl {
       })
     })
   }
-
   // 添加
   add(data) {
-    const sql = `INSERT INTO topProject SET ?`
+    const sql = `INSERT INTO secondProject SET ?`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, data, (err, result) => {
         if (!err) {
@@ -37,8 +35,8 @@ class topProjectImpl {
 
   // 编辑
   edit(data) {
-    const { tid, name, update_time, create_by, enabled } = data
-    const sql = `UPDATE topProject SET name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled} WHERE tid = ${tid}`
+    const { tid, sid, name, update_time, create_by, enabled, bgColor } = data
+    const sql = `UPDATE secondProject SET tid = ${tid}, name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled}, bgColor = '${bgColor}' WHERE sid = ${sid}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -49,10 +47,10 @@ class topProjectImpl {
       })
     })
   }
-  
+
   // 删除
   del(id) {
-    const sql = `DELETE FROM topProject WHERE tid = ${id}`
+    const sql = `DELETE FROM secondProject WHERE sid = ${id}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -65,15 +63,15 @@ class topProjectImpl {
   }
 
   // 根据name或create_time查询
-  queryByBlur({ name, start, end, page, size }) {
-    let sql = `SELECT * FROM topProject `
-    if(name || (start && end)) {
+  queryByBlur({ name, create_time=[], page, size }) {
+    let sql = `select a.*, b.name as pname from secondProject a left join topProject b on a.sid=b.tid `
+    if(name || (create_time.length > 0)) {
       if (name) {
-        sql += `where name = '${name}'`  
-      } else if (start && end){
-        const s = start + ' :00:00:00'
-        const e = end + '23:59:59'
-        sql += `where create_time between '${s}' and '${e}'`
+        sql += `where a.name = '${name}'`  
+      } else if (create_time.length > 0){
+        const s = create_time[0] + ' :00:00:00'
+        const e = create_time[1] + '23:59:59'
+        sql += `where a.create_time between '${s}' and '${e}'`
       }
     }
     return new Promise((resolve, reject) => {
@@ -94,4 +92,4 @@ class topProjectImpl {
   }
 }
 
-module.exports = topProjectImpl
+module.exports = secondProjectImpl

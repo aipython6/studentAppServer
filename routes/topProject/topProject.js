@@ -52,4 +52,17 @@ router.delete('/del', async (req, res) => {
   }
 })
 
+router.post('/blurry', async (req, res) => {
+  const { name, create_time, page, limit } = req.body
+  const data = { name: name, start: create_time[0], end: create_time[1], page: page, limit: limit }
+  const topprojectservice = new topProjectService()
+  const { content, total } = await topprojectservice.queryByBlur(data)
+  const items = content.map(item => {
+    return {
+      tid: item.tid, name: item.name, create_time: item.create_time, enabled: item.enabled === 1 ? true : false, create_by: item.create_by
+    }
+  })
+  res.json({ code: 200, content: items, total: total })
+})
+
 module.exports = router;
