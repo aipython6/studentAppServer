@@ -9,7 +9,7 @@ router.get('/all', async (req, res) => {
   const { content, total } = await bookchapterService.all({ page: Number.parseInt(page), size: Number.parseInt(limit) })
   const items = content.map(item => {
     return {
-      ccid: item.ccid, blid: item.blid, name: item.name, 
+      bcid: item.bcid, blid: item.blid, name: item.name, 
       pname: item.pname, create_time: handleDate(item.create_time),
       enabled: item.enabled === 1 ? true : false,
       create_by: item.create_by
@@ -35,11 +35,11 @@ router.post('/add' ,async (req, res) => {
 })
 
 router.put('/edit', async (req, res) => {
-  const { ccid, name, enabled, blid } = req.body
+  const { bcid, name, enabled, blid } = req.body
   const bookchapterService = new bookChapterService()
   const create_by = req.headers.username
   const update_item = {
-    blid: blid, ccid: ccid, name: name, enabled: enabled === true ? 1 : 0,
+    blid: blid, bcid: bcid, name: name, enabled: enabled === true ? 1 : 0,
     update_time: handleDate(new Date()), create_by: create_by
   }
   const result = await bookchapterService.edit(update_item)
@@ -52,7 +52,6 @@ router.put('/edit', async (req, res) => {
 
 router.delete('/del', async (req, res) => {
   const { bcid } = req.query
-  console.log(req.query)
   const bookchapterService = new bookChapterService()
   const result = await bookchapterService.del(bcid)
   if (result.affectedRows > 0) {

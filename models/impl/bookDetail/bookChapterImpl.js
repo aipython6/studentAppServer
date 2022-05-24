@@ -35,8 +35,8 @@ class bookChapterImpl {
   }
 
   edit(data) {
-    const { ccid, blid, name, update_time, create_by, enabled } = data
-    const sql = `UPDATE bookDetail SET blid = ${blid}, name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled} WHERE ccid = ${ccid}`
+    const { bcid, blid, name, update_time, create_by, enabled } = data
+    const sql = `UPDATE bookChapter SET blid = ${blid}, name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled} WHERE bcid = ${bcid}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -49,7 +49,8 @@ class bookChapterImpl {
   }
 
   del(id) {
-    const sql = `DELETE FROM bookDetail WHERE bcid = ${id}`
+    const sql = `DELETE FROM bookChapter WHERE bcid = ${id}`
+    console.log(sql)
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {

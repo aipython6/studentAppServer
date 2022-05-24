@@ -9,8 +9,8 @@ const cors_instance = require('./utils/cors')
 
 const authRouter = require('./routes/wx/auth/auth')
 const bookChapterRouter = require('./routes/pc/bookDetail/bookChapter')
-// const chapterChildrenRouter = require('./routes/pc/bookDetail/bookChapter')
-// const chapterContentRouter = require('./routes/pc/bookDetail/bookChapter')
+const chapterChildrenRouter = require('./routes/pc/bookDetail/chapterChildren')
+// const chapterContentRouter = require('./routes/pc/bookDetail/chapterContent')
 const bookListRouter = require('./routes/pc/bookList/bookList')
 const bookTypeRouter = require('./routes/pc/bookType/bookType')
 const deptRouter = require('./routes/pc/dept/dept')
@@ -75,7 +75,7 @@ app.use(async (req, res, next) => {
 app.use('/auth', authRouter);
 app.use('/api/bookChapter', bookChapterRouter);
 // app.use('/api/chapterContent', chapterContentRouter);
-// app.use('/api/chapterChildren', chapterChildrenRouter);
+app.use('/api/chapterChildren', chapterChildrenRouter);
 app.use('/api/bookList', bookListRouter);
 app.use('/api/bookType', bookTypeRouter);
 app.use('/api/dept', deptRouter);
