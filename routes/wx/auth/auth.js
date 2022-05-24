@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const getOpenId = require('../../utils/getOpenId')
-const { handleDate }  = require('../../utils/handleDate')
-const authService = require('../../models/service/authService')
+const getOpenId = require('../../../utils/getOpenId')
+const { handleDate }  = require('../../../utils/handleDate')
+const authService = require('../../../models/service/authService')
 // 获取微信用户的openid
 router.post('/login', async (req, res, next) => {
   const authservice = new authService()

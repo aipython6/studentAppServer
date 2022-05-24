@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { handleDate } = require('../../utils/handleDate')
-const pass = require('../../utils/password')
-const userService = require('../../models/service/userService')
-const token = require('../../utils/token')
-const URL = require('../../utils/url')
+const { handleDate } = require('../../../utils/handleDate')
+const pass = require('../../../utils/password')
+const userService = require('../../../models/service/userService')
+const token = require('../../../utils/token')
+const URL = require('../../../utils/url')
 // 后台管理员登录
 router.post('/login', async (req, res, next) => {
   const { username, password } = req.body

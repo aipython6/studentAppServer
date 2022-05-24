@@ -7,21 +7,23 @@ const token = require('./utils/token')
 const cors = require('cors');
 const cors_instance = require('./utils/cors')
 
-const authRouter = require('./routes/auth/auth')
-const bookDetailRouter = require('./routes/bookDetail/bookDetail')
-const bookListRouter = require('./routes/bookList/bookList')
-const bookTypeRouter = require('./routes/bookType/bookType')
-const deptRouter = require('./routes/dept/dept')
-const projectRouter = require('./routes/project/project')
-const settingRouter = require('./routes/setting/setting')
-const regionRouter = require('./routes/region/region')
-const secondProjectRouter = require('./routes/secondProject/secondProject')
-const studentRouter = require('./routes/student/student')
-const studyRouter = require('./routes/study/study')
-const toolRouter = require('./routes/tool/tool')
-const topProjectRouter = require('./routes/topProject/topProject')
-const userRouter = require('./routes/user/user')
-const websiteRouter = require('./routes/website/website')
+const authRouter = require('./routes/wx/auth/auth')
+const bookChapterRouter = require('./routes/pc/bookDetail/bookChapter')
+// const chapterChildrenRouter = require('./routes/pc/bookDetail/bookChapter')
+// const chapterContentRouter = require('./routes/pc/bookDetail/bookChapter')
+const bookListRouter = require('./routes/pc/bookList/bookList')
+const bookTypeRouter = require('./routes/pc/bookType/bookType')
+const deptRouter = require('./routes/pc/dept/dept')
+const projectRouter = require('./routes/pc/project/project')
+const settingRouter = require('./routes/pc/setting/setting')
+const regionRouter = require('./routes/wx/region/region')
+const secondProjectRouter = require('./routes/pc/secondProject/secondProject')
+const studentRouter = require('./routes/wx/student/student')
+const studyRouter = require('./routes/wx/study/study')
+const toolRouter = require('./routes/wx/tool/tool')
+const topProjectRouter = require('./routes/pc/topProject/topProject')
+const userRouter = require('./routes/pc/user/user')
+const websiteRouter = require('./routes/wx/website/website')
 
 
 const app = express();
@@ -71,7 +73,9 @@ app.use(async (req, res, next) => {
 
 
 app.use('/auth', authRouter);
-app.use('/api/bookDetail', bookDetailRouter);
+app.use('/api/bookChapter', bookChapterRouter);
+// app.use('/api/chapterContent', chapterContentRouter);
+// app.use('/api/chapterChildren', chapterChildrenRouter);
 app.use('/api/bookList', bookListRouter);
 app.use('/api/bookType', bookTypeRouter);
 app.use('/api/dept', deptRouter);

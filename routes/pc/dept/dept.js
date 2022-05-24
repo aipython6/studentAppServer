@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { handleDate } = require('../../utils/handleDate')
-const pass = require('../../utils/password')
-const deptService = require('../../models/service/deptService')
+const { handleDate } = require('../../../utils/handleDate')
+const pass = require('../../../utils/password')
+const deptService = require('../../../models/service/deptService')
 
 router.get('/all', async (req, res) => {
   const deptservice = new deptService()

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const topProjectService = require('../../models/service/topProjectService')
-const { handleDate } = require('../../utils/handleDate')
+const topProjectService = require('../../../models/service/topProjectService')
+const { handleDate } = require('../../../utils/handleDate')
 
 router.get('/all', async (req, res) => {
   const { page, limit } = req.query

@@ -3,11 +3,11 @@ const router = express.Router();
 const fs = require('fs')
 const path = require('path')
 const { v4: uuidv4 } = require('uuid')
-const bookListService = require('../../models/service/bookListService')
-const { handleDate } = require('../../utils/handleDate')
-const URL = require('../../utils/url')
+const bookListService = require('../../../models/service/bookListService')
+const { handleDate } = require('../../../utils/handleDate')
+const URL = require('../../../utils/url')
 
-const upload = require('../../utils/postFile')
+const upload = require('../../../utils/postFile')
 const uploadObj = upload.postCoverImg()
 // 课本封面上传
 router.post('/upload', uploadObj.array('file'), async (req, res) => {
