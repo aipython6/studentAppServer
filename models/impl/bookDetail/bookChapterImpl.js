@@ -1,19 +1,12 @@
 const mysqlConnect = require('../../../database/mysql_config')
 
 class bookChapterImpl {
-  all(params) {
-    const { page, size } = params
-    const sql = `select a.*,b.name as pname from bookChapter a left join bookList b on a.blid=b.blid ORDER BY a.create_time DESC`
+  all() {
+    const sql = `select * from books a ORDER BY a.create_time DESC`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
-          const total = result.length
-          let dicts = result
-          if (page && size) {
-            const pageList = dicts.filter((item, index) => index < size * page && index >= size * (page - 1))
-            dicts = pageList
-          }
-          resolve({ content: dicts, total: total })
+          resolve({ content: result })
         } else {
           reject(err)
         }

@@ -7,14 +7,17 @@ class bookService {
   all(params) {
     return this.bookImpl.all(params)
   }
+  getPnameBypid(pid) {
+    return this.bookImpl.getPnameBypid(pid)
+  }
   add(data) {
-    return this.book.add(data)
+    return this.bookImpl.add(data)
   }
   edit(data) {
-    return this.book.edit(data)
+    return this.bookImpl.edit(data)
   }
   del(id) {
-    return this.book.del(id)
+    return this.bookImpl.del(id)
   }
 }
 module.exports = bookService

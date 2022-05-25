@@ -4,8 +4,8 @@ class bookChapterService {
   constructor() {
     this.bookChapterImpl = new bookChapterImpl()
   }
-  all(params) {
-    return this.bookChapterImpl.all(params)
+  all() {
+    return this.bookChapterImpl.all()
   }
   add(data) {
     return this.bookChapterImpl.add(data)

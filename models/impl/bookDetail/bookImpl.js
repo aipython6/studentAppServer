@@ -2,9 +2,8 @@ const mysqlConnect = require('../../../database/mysql_config')
 
 class bookImpl {
   all(params) {
-    // type:表示课本、一级章节或二级章节
-    const { page, size, type } = params
-    const sql = `select a.*, b.name as pname from books a left join bookType b on a.btid=b.btid where a.type = ${type} order by a.create_time desc`
+    const { page, size } = params
+    const sql = `select a.*, b.name as pname from books a left join bookType b on a.btid=b.btid order by a.create_time desc`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -19,6 +18,21 @@ class bookImpl {
           reject(err)
         }
       })
+    })
+  }
+
+  // 根据pid查询上一级的name
+  getPnameBypid(pids) {
+    const sql = `select name as pname, bid from books where bid in (?)`
+    mysqlConnect.query(sql, [pids], (err, result) => {
+      if (!err) {
+        const items = result.map(e => {
+          return { pname: e.pname, bid: e.bid }
+          resolve(items)
+        })
+      } else {
+        reject(err)
+      }
     })
   }
 

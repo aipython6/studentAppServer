@@ -2,20 +2,14 @@ const express = require('express');
 const router = express.Router();
 const bookChapterService = require('../../../models/service/bookDetail/bookChapterService')
 const { handleDate } = require('../../../utils/handleDate')
+const { handleChapter } = require('../../../utils/handleChapter')
 
 router.get('/all', async (req, res) => {
-  const { page, limit } = req.query
+  // const { page, limit } = req.query
   const bookchapterService = new bookChapterService()
-  const { content, total } = await bookchapterService.all({ page: Number.parseInt(page), size: Number.parseInt(limit) })
-  const items = content.map(item => {
-    return {
-      bcid: item.bcid, blid: item.blid, name: item.name, 
-      pname: item.pname, create_time: handleDate(item.create_time),
-      enabled: item.enabled === 1 ? true : false,
-      create_by: item.create_by
-    }
-  })
-  res.json({ code: 200, content: items, total: total })
+  const { content } = await bookchapterService.all()
+  const items = handleChapter(content)
+  res.json({ code: 200, content: items })
 })
 
 router.post('/add' ,async (req, res) => {
