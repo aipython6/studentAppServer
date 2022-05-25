@@ -7,6 +7,9 @@ class bookChapterService {
   all() {
     return this.bookChapterImpl.all()
   }
+  getNameBybid(bid) {
+    return this.bookChapterImpl.getNameBybid(bid)
+  }
   add(data) {
     return this.bookChapterImpl.add(data)
   }
@@ -15,9 +18,6 @@ class bookChapterService {
   }
   del(id) {
     return this.bookChapterImpl.del(id)
-  }
-  blurry(data) {
-    return this.bookChapterImpl.blurry(data)
   }
 }
 

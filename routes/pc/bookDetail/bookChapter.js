@@ -12,13 +12,20 @@ router.get('/all', async (req, res) => {
   res.json({ code: 200, content: items })
 })
 
+router.get('/getNameBybid', async (req, res) => {
+  const { bid } = req.query
+  const bookchapterService = new bookChapterService()
+  const { pname } = await bookchapterService.getNameBybid(bid)
+  res.json({ code: 200, pname: pname })
+})
+
 router.post('/add' ,async (req, res) => {
-  const { name, enabled, blid } = req.body
+  const { name, enabled, pid, type } = req.body
   const create_by = req.headers.username
   const bookchapterService = new bookChapterService()
   const insert_item = {
     name: name, enabled: enabled === true ? 1 : 0, create_time: handleDate(new Date()),
-    update_time: handleDate(new Date()), create_by: create_by, blid: blid
+    update_time: handleDate(new Date()), create_by: create_by, pid: pid, type: type
   }
   const result = await bookchapterService.add(insert_item)
   if (result.affectedRows > 0) {
@@ -29,11 +36,11 @@ router.post('/add' ,async (req, res) => {
 })
 
 router.put('/edit', async (req, res) => {
-  const { bcid, name, enabled, blid } = req.body
+  const { bid, name, enabled } = req.body
   const bookchapterService = new bookChapterService()
   const create_by = req.headers.username
   const update_item = {
-    blid: blid, bcid: bcid, name: name, enabled: enabled === true ? 1 : 0,
+    bid: bid, name: name, enabled: enabled === true ? 1 : 0,
     update_time: handleDate(new Date()), create_by: create_by
   }
   const result = await bookchapterService.edit(update_item)
@@ -45,9 +52,9 @@ router.put('/edit', async (req, res) => {
 })
 
 router.delete('/del', async (req, res) => {
-  const { bcid } = req.query
+  const { bid } = req.query
   const bookchapterService = new bookChapterService()
-  const result = await bookchapterService.del(bcid)
+  const result = await bookchapterService.del(bid)
   if (result.affectedRows > 0) {
     res.json({ code: 200, msg: '删除成功' })
   } else {

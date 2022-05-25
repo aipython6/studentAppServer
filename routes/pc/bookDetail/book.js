@@ -68,7 +68,7 @@ router.put('/edit', async (req, res) => {
   const update_item = {
     btid: btid, bid: bid, name: name, enabled: enabled === true ? 1 : 0,
     update_time: handleDate(new Date()), create_by: create_by, ISBN: ISBN,
-    publishedName: publishedName, author: author, coverImg: coverImg
+    publishedName: publishedName, author: author, coverImg: coverImg,
   }
   const result = await bookservice.edit(update_item)
   if (result.affectedRows > 0) {

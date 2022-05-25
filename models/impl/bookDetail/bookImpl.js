@@ -3,7 +3,7 @@ const mysqlConnect = require('../../../database/mysql_config')
 class bookImpl {
   all(params) {
     const { page, size } = params
-    const sql = `select a.*, b.name as pname from books a left join bookType b on a.btid=b.btid order by a.create_time desc`
+    const sql = `select a.*, b.name as pname from books a left join bookType b on a.btid=b.btid where a.type = 0 order by a.create_time desc`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -50,8 +50,8 @@ class bookImpl {
   }
 
   edit(data) {
-    const { bid, pid, btid, type, coverImg, author, publishedName, ISBN, name, update_time, create_by, enabled } = data
-    const sql = `UPDATE books SET pid = ${pid}, btid = ${btid}, type = ${type}, coverImg = '${coverImg}', author = '${author}', publishedName='${publishedName}', ISBN='${ISBN}, name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled} WHERE bid = ${bid}`
+    const { bid, btid, coverImg, author, publishedName, ISBN, name, update_time, create_by, enabled } = data
+    const sql = `UPDATE books SET btid = ${btid}, coverImg = '${coverImg}', author = '${author}', publishedName='${publishedName}', ISBN='${ISBN}', name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled} WHERE bid = ${bid}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
