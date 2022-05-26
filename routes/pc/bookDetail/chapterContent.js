@@ -43,34 +43,32 @@ router.get('/allBybid', async (req, res) => {
 
 // 3.获取该2级章节下的所有图片
 router.get('/all', async (req, res) => {
-  const { page, limit } = req.query
+  const { page, limit, bid } = req.query
   const chaptercontentService = new chapterContentService()
-  const { content, total } = await chaptercontentService.all({ page: Number.parseInt(page), size: Number.parseInt(limit) })
+  const { content, total } = await chaptercontentService.all({ page: Number.parseInt(page), size: Number.parseInt(limit), bid: Number.parseInt(bid) })
   const items = content.map(item => {
     return {
-      name: item.name, url: item.url, enabled: item.enabled === 1 ? true : false,
+      ccid: item.ccid, pname: item.pname, url: item.url, enabled: item.enabled === 1 ? true : false,
       create_time: handleDate(item.create_time), create_by: item.create_by
     }
   })
-  res.json({ code: 200, content: items })
+  res.json({ code: 200, content: items, total: total})
 })
 
 router.post('/add', async (req, res) => {
   const data = req.body
+  // 0表示课本内容，1表示练习题
+  const type = 0
+  // console.log(data)
   const create_by = req.headers.username
   const chaptercontentService = new chapterContentService()
   // 添加多条记录的数据格式:data[[item1],[item2],...]
   const insert_item = []
   for (let item of data.urls) {
-    let t = [ item.bid, item.url, create_by, handleDate(new Date()), item.enabled ]
+    let t = [ Number.parseInt(data.bid), item, create_by, handleDate(new Date()), data.enabled === true ? 1 : 0, type ]
     insert_item.push(t)
     t = []
   }
-  // const insert_item = {
-  //   bid: bid,
-  //   name: name, enabled: enabled === true ? 1 : 0, create_time: handleDate(new Date()),
-  //   update_time: handleDate(new Date()), create_by: create_by, url: url
-  // }
   const result = await chaptercontentService.add(insert_item)
   if (result.affectedRows > 0) {
     res.json({ code: 200, msg: '添加成功' })

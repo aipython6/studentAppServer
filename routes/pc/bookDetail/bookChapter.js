@@ -51,6 +51,7 @@ router.put('/edit', async (req, res) => {
   }
 })
 
+// 删除父节点时，其下所有子节点均被删除
 router.delete('/del', async (req, res) => {
   const { bid } = req.query
   const bookchapterService = new bookChapterService()

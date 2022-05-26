@@ -16,8 +16,8 @@ class bookChapterService {
   edit(data) {
     return this.bookChapterImpl.edit(data)
   }
-  del(id) {
-    return this.bookChapterImpl.del(id)
+  del(bid) {
+    return this.bookChapterImpl.del(bid)
   }
 }
 

@@ -53,8 +53,8 @@ class bookChapterImpl {
     })
   }
 
-  del(id) {
-    const sql = `DELETE FROM books WHERE bid = ${id}`
+  del(bid) {
+    const sql = `DELETE FROM books WHERE bid = ${bid} or pid = ${bid}`
     console.log(sql)
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {

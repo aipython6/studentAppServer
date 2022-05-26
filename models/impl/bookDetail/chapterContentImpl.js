@@ -19,8 +19,8 @@ class chapterContentImpl {
   }
 
   all(params) {
-    const { page, size } = params
-    const sql = `select a.*, b.name as pname from chapterContent a left join books b on a.bid=b.bid`
+    const { page, size, bid } = params
+    const sql = `select a.*, b.name as pname from chapterContent a left join books b on a.bid=b.bid where a.bid = ${bid}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if(!err) {
@@ -39,7 +39,7 @@ class chapterContentImpl {
   }
 
   add(data) {
-    const sql = `INSERT INTO chapterContent SET ?`
+    const sql = `insert into chapterContent(bid, url, create_by, create_time, enabled, type) values ?`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, [data], (err, result) => {
         if (!err) {
