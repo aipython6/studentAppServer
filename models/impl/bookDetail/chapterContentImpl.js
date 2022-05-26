@@ -1,14 +1,29 @@
 const mysqlConnect = require('../../../database/mysql_config')
 
-class chapterChildrenImpl {
-  all(params) {
-    const { page, size } = params
-    const sql = `select c.*,d.name as bname from (
-    select a.*, b.name as pname, b.blid from chapterChildren a left join bookChapter b on a.bcid = b.bcid)c
-    left join bookList d on c.blid = d.blid ORDER BY c.create_time DESC`
+class chapterContentImpl {
+  allBybid(bid) {
+    // 查询二级标题对应的课本名称和一级标题
+    const sql = `select c.*,d.name as bname from 
+    (select a.*,b.name as cname, b.pid as spid from 
+    (select bid, pid, name from books a where bid=${bid}) a left join
+    books b on a.pid=b.bid) c left join books d on c.spid=d.bid`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  all(params) {
+    const { page, size } = params
+    const sql = `select a.*, b.name as pname from chapterContent a left join books b on a.bid=b.bid`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if(!err) {
           const total = result.length
           let dicts = result
           if (page && size) {
@@ -24,9 +39,9 @@ class chapterChildrenImpl {
   }
 
   add(data) {
-    const sql = `INSERT INTO chapterChildren SET ?`
+    const sql = `INSERT INTO chapterContent SET ?`
     return new Promise((resolve, reject) => {
-      mysqlConnect.query(sql, data, (err, result) => {
+      mysqlConnect.query(sql, [data], (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -37,8 +52,8 @@ class chapterChildrenImpl {
   }
 
   edit(data) {
-    const { ccid, bcid, name, update_time, create_by, enabled } = data
-    const sql = `UPDATE chapterChildren SET bcid = ${bcid}, name = '${name}', update_time = '${update_time}', create_by = '${create_by}', enabled = ${enabled} WHERE ccid = ${ccid}`
+    const { url, update_time, ccid, enabled } = data
+    const sql = ` update chapterContent set url = '${url}', update_time='${update_time}', enabled = ${enabled} where ccid = ${ccid} `
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -51,8 +66,7 @@ class chapterChildrenImpl {
   }
 
   del(id) {
-    const sql = `DELETE FROM chapterChildren WHERE ccid = ${id}`
-    console.log(sql)
+    const sql = `delete from chapterContent where ccid = ${id}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -65,4 +79,4 @@ class chapterChildrenImpl {
   }
 }
 
-module.exports = chapterChildrenImpl
+module.exports = chapterContentImpl
