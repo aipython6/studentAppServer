@@ -5,6 +5,7 @@ const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const imageService = require('../../../../models/service/settings/wechat/imageService')
 const { handleDate } = require('../../../../utils/handleDate')
+const { delFileNameByURL } = require('../../../../utils/handleFile')
 const URL = require('../../../../utils/url')
 const upload = require('../../../../utils/postFile')
 const uploadObj = upload.postwxImg()
@@ -55,6 +56,7 @@ router.post('/add', async (req, res) => {
   }
 })
 
+
 router.put('/edit', async (req, res) => {
   const { wid, content, enabled, url, type } = req.body
   const imageservice = new imageService()
@@ -73,10 +75,11 @@ router.put('/edit', async (req, res) => {
 })
 
 router.delete('/del', async (req, res) => {
-  const { wid } = req.query
+  const { wid, url } = req.query
   const imageservice = new imageService()
   const result = await imageservice.del(wid)
   if (result.affectedRows > 0) {
+    const r = await delFileNameByURL(url, 'swiperAndIcons')
     res.json({ code: 200, msg: '删除成功' })
   } else {
     res.json({ code: 200, msg: '删除失败'})

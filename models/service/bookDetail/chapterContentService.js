@@ -23,6 +23,10 @@ class chapterContentService {
   del(id) {
     return this.chapterContentImpl.del(id)
   }
+  // 此操作是删除chapterContent表中的记录
+  delBybid(bid) {
+    return this.chapterContentImpl.delBybid(bid)
+  }
 }
 
 module.exports = chapterContentService

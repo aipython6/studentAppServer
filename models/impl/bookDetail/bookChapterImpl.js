@@ -66,6 +66,19 @@ class bookChapterImpl {
       })
     })
   }
+  delBybids(bids) {
+    const sql = `DELETE FROM books WHERE bid in (?)`
+    console.log(sql)
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, [bids], (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = bookChapterImpl

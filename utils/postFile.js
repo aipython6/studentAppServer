@@ -43,6 +43,20 @@ class postFile {
     const uploader = multer({ storage: storage })
     return uploader
   }
+
+  postLinkCoverImg() {
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, URL.linkCoverImgUpload)
+      },
+      filename: (req, file, cb) => {
+        const filename = file.originalname
+        cb(null, filename)
+      }
+    })
+    const uploader = multer({ storage: storage })
+    return uploader
+  }
 }
 
 const upload = new postFile()

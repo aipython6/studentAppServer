@@ -44,4 +44,33 @@ const handleChapter = (items) => {
   return treeData
 }
 
-module.exports = { handleChapter }
+// 根据传入的bid删除其下所有的子章节
+const getAllbids = (bid, items) => {
+  // 最终需要删除的全部bid
+  let all_bids = []
+  // 保存一级bid
+  const bids1 = []
+  // 保存二级bid
+  const bids2 = []
+  // 先查找一级的bid
+  items.forEach(a => {
+    if (a.pid === bid) {
+      bids1.push(a.bid)
+    }
+  })
+  // 再继续往下查找二级的bid
+  if (bids1.length > 0) {
+    items.forEach(b => {
+      bids1.forEach(c => {
+        if (c === b.pid) {
+          bids2.push(b.bid)
+        }
+      })
+    })
+  }
+  // 所有的bids
+  all_bids = [bid, ...bids1, ...bids2]
+  return all_bids
+}
+
+module.exports = { handleChapter, getAllbids }

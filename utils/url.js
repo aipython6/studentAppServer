@@ -21,7 +21,13 @@ const URL = {
   //上传swiper和icons
   swiperAndIconsUpload: path.join(__dirname, '../public/images/settings/wechat/image/'),
 
+  //下载swiper和icons
   swiperAndIconsDownload: base_url + 'images/settings/wechat/image/',
+
+  // 上传link的背景图片
+  linkCoverImgUpload: path.join(__dirname, '../public/images/settings/wechat/link/'),
+  // 下载link的背景图片
+  linkCoverImgDownload: base_url + 'images/settings/wechat/link/',
 }
 
 module.exports = URL

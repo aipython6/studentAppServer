@@ -5,6 +5,7 @@ const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const bookListService = require('../../../models/service/bookListService')
 const { handleDate } = require('../../../utils/handleDate')
+const { delFileNameByURL } = require('../../../utils/handleFile')
 const URL = require('../../../utils/url')
 
 const upload = require('../../../utils/postFile')
@@ -77,10 +78,11 @@ router.put('/edit', async (req, res) => {
 })
 
 router.delete('/del', async (req, res) => {
-  const { blid } = req.query
+  const { blid, url } = req.query
   const booklistService = new bookListService()
   const result = await booklistService.del(blid)
   if (result.affectedRows > 0) {
+    const r = await delFileNameByURL(url, 'bookList')
     res.json({ code: 200, msg: '删除成功' })
   } else {
     res.json({ code: 200, msg: '删除失败'})

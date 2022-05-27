@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const { handleDate } = require('../../../utils/handleDate')
+const { delFileNameByURL } = require('../../../utils/handleFile')
 const chapterContentService = require('../../../models/service/bookDetail/chapterContentService')
 const URL = require('../../../utils/url')
 
@@ -59,7 +60,6 @@ router.post('/add', async (req, res) => {
   const data = req.body
   // 0表示课本内容，1表示练习题
   const type = 0
-  // console.log(data)
   const create_by = req.headers.username
   const chaptercontentService = new chapterContentService()
   // 添加多条记录的数据格式:data[[item1],[item2],...]
@@ -94,10 +94,12 @@ router.put('/edit', async (req, res) => {
 })
 
 router.delete('/del', async (req, res) => {
-  const { ccid } = req.query
+  const { ccid, url } = req.query
   const chaptercontentService = new chapterContentService()
   const result = await chaptercontentService.del(ccid)
   if (result.affectedRows > 0) {
+    // 同时将文件删除
+    const r = await delFileNameByURL(url, 'chapterContent')
     res.json({ code: 200, msg: '删除成功' })
   } else {
     res.json({ code: 200, msg: '删除失败'})

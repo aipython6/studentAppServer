@@ -19,6 +19,10 @@ class bookChapterService {
   del(bid) {
     return this.bookChapterImpl.del(bid)
   }
+  // 批量删除books中的记录
+  delBybids(bids) {
+    return this.bookChapterImpl.delBybids(bids)
+  }
 }
 
 module.exports = bookChapterService
