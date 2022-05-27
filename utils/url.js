@@ -1,5 +1,4 @@
 // 一些URL的配置
-const { basename } = require('path')
 const path = require('path')
 const base_url = 'http://localhost:8090/'
 
@@ -17,7 +16,12 @@ const URL = {
   chapterContentUpload: path.join(__dirname, '../public/images/book/chapterContent/'),
 
   // 下载章节内容
-  chapterContentDownload: base_url + 'images/book/chapterContent/'
+  chapterContentDownload: base_url + 'images/book/chapterContent/',
+
+  //上传swiper和icons
+  swiperAndIconsUpload: path.join(__dirname, '../public/images/settings/wechat/image/'),
+
+  swiperAndIconsDownload: base_url + 'images/settings/wechat/image/',
 }
 
 module.exports = URL

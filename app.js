@@ -82,7 +82,7 @@ app.use('/api/dept', deptRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/region', regionRouter);
 app.use('/api/secondProject', secondProjectRouter);
-app.use('/api/setting', settingRouter);
+app.use('/api/settings', settingRouter);
 app.use('/api/student', studentRouter);
 app.use('/api/study', studyRouter);
 app.use('/api/tool', toolRouter);
