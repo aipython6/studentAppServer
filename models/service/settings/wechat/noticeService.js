@@ -20,5 +20,9 @@ class noticeService {
   del(id) {
     return this.noticeImpl.del(id)
   }
+
+  getNotice(data) {
+    return this.noticeImpl.getNotice(data)
+  }
 }
 module.exports = noticeService

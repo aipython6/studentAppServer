@@ -61,6 +61,21 @@ class imageImpl {
       })
     })
   }
+
+  // 小程序相关
+  // 1.根据type获取获取swiper或icons
+  getImages({ type }) {
+    const sql = `select * from wxImgs where type = ${type} and enabled = 1`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = imageImpl

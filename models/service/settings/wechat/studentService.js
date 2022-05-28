@@ -5,7 +5,7 @@ class studentService {
     this.studentImpl = new studentImpl()
   }
   all(params) {
-    return this.noticeImpl.all(params)
+    return this.studentImpl.all(params)
   }
 }
 module.exports = studentService

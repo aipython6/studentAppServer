@@ -19,5 +19,9 @@ class imageService {
   queryByBlur(data) {
     return this.imageImpl.queryByBlur(data)
   }
+
+  getImages(data) {
+    return this.imageImpl.getImages(data)
+  }
 }
 module.exports = imageService

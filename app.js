@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const { isWhiteURL } = require('./utils/handleRouter')
 const token = require('./utils/token')
 const cors = require('cors');
 const cors_instance = require('./utils/cors')
@@ -57,12 +58,15 @@ app.use(async (req, res, next) => {
     }
   }
   // 微信端放行登录操作
-  const wx_whiteList = ['/auth/login']
-  if (wx_whiteList.includes(url)) {
+  const wx_whiteList = ['/auth/login', '/api/wx/website', '/api/study']
+  // console.log(url)
+  if (isWhiteURL(wx_whiteList, url)) {
     return next()
   } else {
     const sessionKey = req.headers.authorization
     const openid = req.headers.openid
+    // console.log(sessionKey)
+    // console.log(openid)
     if (!(sessionKey && openid)) {
       res.json({ code: 200, msg: '您还未授权登录,请先授权登录' })
     } else {
@@ -88,7 +92,7 @@ app.use('/api/study', studyRouter);
 app.use('/api/tool', toolRouter);
 app.use('/api/topProject', topProjectRouter);
 app.use('/api/user', userRouter);
-app.use('/api/website', websiteRouter);
+app.use('/api/wx/website', websiteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

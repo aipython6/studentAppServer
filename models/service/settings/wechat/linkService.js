@@ -23,5 +23,19 @@ class linkService {
   del(id) {
     return this.linkImpl.del(id)
   }
+
+  // 小程序端使用到的查询
+  allLinksByclickNum(params) {
+    return this.linkImpl.allLinksByclickNum(params)
+  }
+
+  // 根据name查询所有link
+  allLinksByName(params) {
+    return this.linkImpl.allLinksByName(params)
+  }
+
+  allLinksByProvince() {
+    return this.linkImpl.allLinksByProvince()
+  }
 }
 module.exports = linkService

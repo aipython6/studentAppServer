@@ -34,7 +34,7 @@ router.get('/all', async (req, res, next) => {
     return {
       lid: item.lid, name: item.name, coverImg: item.coverImg, create_time: handleDate(item.create_time),
       enabled: item.enabled === 1 ? true : false, type: item.type, create_by: item.create_by,
-      pname : item.pname, link: item.link, pid: item.pid
+      pname : item.pname, link: item.link, pid: item.pid, clickNum: item.clickNum
     }
   })
   res.json({ code: 200, content: items, total: total })
@@ -46,7 +46,7 @@ router.post('/add', async (req, res) => {
   const ls = new linkService()
   const insert_item = {
     name: name, link: link, type: type, enabled: enabled === true ? 1 : 0,
-    create_by: create_by, create_time: handleDate(new Date()), pid: pid, coverImg: coverImg
+    create_by: create_by, create_time: handleDate(new Date()), pid: pid, coverImg: coverImg, clickNum: 0
   }
   const result = await ls.add(insert_item)
   if (result.affectedRows > 0) {

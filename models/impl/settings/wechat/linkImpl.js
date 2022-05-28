@@ -1,7 +1,7 @@
 const mysqlConnect = require('../../../../database/mysql_config')
 
-class imageImpl {
-
+class linkImpl {
+  //PC端使用的方法
   // 获取省份
   getProvinces() {
     const sql = `select pid, pname from provinces`
@@ -78,6 +78,62 @@ class imageImpl {
       })
     })
   }
+
+
+  // 小程序端使用的查询
+  // 1.获取所有可用的链接
+  allLinksByclickNum({ page, size }) {
+    const sql = `select a.*, b.pname from links a left join provinces b on a.pid = b.pid where a.enabled = 1 order by a.clickNum desc`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          const total = result.length
+          let dicts = result
+          if (page && size) {
+            const pageList = dicts.filter((item, index) => index < size * page && index >= size * (page - 1))
+            dicts = pageList
+          }
+          resolve({ content: dicts, total: total })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 2. 根据name查询链接
+  allLinksByName({ page, size, name }) {
+    const sql = `select a.*, b.pname from links a left join provinces b on a.pid = b.pid where a.enabled = 1 and a.name like '%${name}%' order by a.clickNum desc`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          const total = result.length
+          let dicts = result
+          if (page && size) {
+            const pageList = dicts.filter((item, index) => index < size * page && index >= size * (page - 1))
+            dicts = pageList
+          }
+          resolve({ content: dicts, total: total })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 根据省份汇总link数据
+  allLinksByProvince() {
+    const sql = `select a.pid, pname, count(1) as num from links a left join provinces b on a.pid = b.pid group by a.pid, pname order by num desc`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
-module.exports = imageImpl
+module.exports = linkImpl
