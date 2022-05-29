@@ -52,7 +52,7 @@ class studentImpl {
 
   // 获取openid所有收藏的课本列表
   getCollectedBooks({ openid }) {
-    const sql = `select c.bid, c.create_time,c.name, c.publishedName,c.coverImg,
+    const sql = `select c.bid, c.create_time,c.name, c.publishedName,c.coverImg,c.clickNum,
     (case when d.bid is not null then '已学习' else '未学习' end) status
     from 
     (
@@ -82,6 +82,20 @@ class studentImpl {
           } else {
             resolve({ result: false })
           }
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  //2.用户学习,添加一条新记录到课程学习关系表中 
+  studyProjectRecord(data) {
+    const sql = `insert into student_study_books set ?`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, data, (err, result) => {
+        if (!err) {
+          resolve(result)
         } else {
           reject(err)
         }

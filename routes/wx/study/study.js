@@ -94,7 +94,7 @@ router.get('/getChapterConentList', async (req, res) => {
   const { content } = await wps.getChapterConentList(Number.parseInt(bid), Number.parseInt(type))
   const result = content.map(item => {
     return {
-      ccid: item.ccid, url: item.url
+      ccid: item.ccid, url: item.url, bid: item.bid
     }
   })
   res.json({ code: 200, content: result })

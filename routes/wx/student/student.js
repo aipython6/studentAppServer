@@ -42,4 +42,18 @@ router.get('/getCollectedBooks', async (req, res) => {
   res.json({ code: 200, content: items })
 })
 
+// 4.用户学习课程,添加一条新纪录到课程学习关系表
+router.get('/studyProjectRecord', async (req, res) => {
+  const { bid, start_time, end_time, study_time } = req.query
+  const openid = req.headers.openid
+  const ss = new studentService()
+  const insert_item = { bid: bid, openid: openid, create_time: handleDate(new Date()), start_time: start_time, end_time: end_time, study_time: study_time }
+  const result = await ss.studyProjectRecord(insert_item)
+  if (result.affectedRows > 0) {
+    res.json({ code: 200 })
+  } else {
+    res.json({ code: 200, msg: '添加失败'})
+  }
+})
+
 module.exports = router;

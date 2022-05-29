@@ -20,5 +20,9 @@ class studentService {
     return this.studentImpl.getIsStudy(data)
   }
 
+  studyProjectRecord(data) {
+    return this.studentImpl.studyProjectRecord(data)
+  }
+
 }
 module.exports = studentService
