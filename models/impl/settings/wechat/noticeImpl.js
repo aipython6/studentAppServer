@@ -65,7 +65,6 @@ class noticeImpl {
   // 小程序的方法
   getNotice({ type }) {
     const sql = `select * from notices where type = ${type} and enabled = 1`
-    console.log(sql)
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
