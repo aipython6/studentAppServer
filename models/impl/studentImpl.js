@@ -130,6 +130,47 @@ class studentImpl {
       })
     })
   }
+
+  // 获取已学习的课程列表
+  getStudyProjectList({ openid }) {
+    const sql = `select a.id, a.temp_end_time,a.study_time, b.bid, b.name, b.publishedName, b.coverImg from student_study_books a left join books b on a.pid = b.bid where openid = '${openid}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 根据id删除课程记录表中的数据
+  deleteStudyProject({ id }) {
+    const sql = `delete from student_study_books where id = ${id}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  getStudentNumFromStudyProject() {
+    const sql = `select count(1) as num from student_study_books`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = studentImpl

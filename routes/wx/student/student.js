@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const studentService = require('../../../models/service/studentService')
-const { handleDate } = require('../../../utils/handleDate')
+const { handleDate, SecondsToMinutes } = require('../../../utils/handleDate')
 
 // 学生收藏、取消收藏、学习记录的相关路由
 
@@ -90,4 +90,36 @@ router.post('/updateStudyProjectRecord', async (req, res) => {
   }
 })
 
+// 7.根据openid获取已学习课程的列表
+router.get('/getStudyProjectList', async (req, res) => {
+  const openid = req.headers.openid
+  const ss = new studentService()
+  const { content } = await ss.getStudyProjectList({ openid: openid })
+  const items = content.map(item => {
+    return {
+      id: item.id,bid: item.bid, temp_end_time: handleDate(item.temp_end_time), 
+      publishedName: item.publishedName, name: item.name,
+      coverImg: item.coverImg, study_time: SecondsToMinutes(item.study_time)
+    }
+  })
+  res.json({ code: 200, content: items })
+})
+
+// 根据id删除课程学习记录表中的数据
+router.get('/deleteStudyProject', async (req, res) => {
+  const { id } = req.query
+  const ss = new studentService()
+  const result = await ss.deleteStudyProject({ id: id })
+  if (result.affectedRows > 0) {
+    res.json({ code: 200 })
+  } else {
+    res.json({ code: 200, msg: '更新失败'})
+  }
+})
+
+router.get('/getStudentNumFromStudyProject', async (req, res) => {
+  const ss = new studentService()
+  const { content } = await ss.getStudentNumFromStudyProject()
+  res.json({ code: 200, num: content[0].num })
+})
 module.exports = router;

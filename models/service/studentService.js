@@ -32,5 +32,16 @@ class studentService {
     return this.studentImpl.updateStudyProjectRecord(data)
   }
 
+  getStudyProjectList(data) {
+    return this.studentImpl.getStudyProjectList(data)
+  }
+
+  deleteStudyProject(data) {
+    return this.studentImpl.deleteStudyProject(data)
+  }
+
+  getStudentNumFromStudyProject() {
+    return this.studentImpl.getStudentNumFromStudyProject()
+  }
 }
 module.exports = studentService
