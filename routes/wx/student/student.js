@@ -43,16 +43,50 @@ router.get('/getCollectedBooks', async (req, res) => {
 })
 
 // 4.用户学习课程,添加一条新纪录到课程学习关系表
-router.get('/studyProjectRecord', async (req, res) => {
-  const { bid, start_time, end_time, study_time } = req.query
+router.post('/setStudyProjectRecord', async (req, res) => {
+  const { bid, start_time, end_time, study_time, temp_start_time, temp_end_time, pid } = req.body
+  console.log(req.body)
   const openid = req.headers.openid
   const ss = new studentService()
-  const insert_item = { bid: bid, openid: openid, create_time: handleDate(new Date()), start_time: start_time, end_time: end_time, study_time: study_time }
-  const result = await ss.studyProjectRecord(insert_item)
+  const insert_item = { 
+    bid: Number.parseInt(bid), openid: openid, start_time: handleDate(start_time), end_time: handleDate(end_time), 
+    study_time: study_time, temp_start_time: handleDate(temp_start_time), 
+    temp_end_time: handleDate(temp_end_time), pid: Number.parseInt(pid)
+  }
+  const result = await ss.setStudyProjectRecord(insert_item)
   if (result.affectedRows > 0) {
     res.json({ code: 200 })
   } else {
     res.json({ code: 200, msg: '添加失败'})
+  }
+})
+
+// 5.从课程学习关系表获取一条记录(根据openid和pid)
+router.get('/getStudyProjectRecord', async (req, res) => {
+  const { pid } = req.query
+  const openid = req.headers.openid
+  const ss = new studentService()
+  const { content } = await ss.getStudyProjectRecord({ openid: openid, pid: pid })
+  const items = content.map(item => {
+    return {
+      bid: item.bid, start_time: item.start_time, study_time: item.study_time,
+      temp_start_time: item.temp_start_time, temp_end_time: item.temp_end_time
+    }
+  })
+  res.json({ code: 200, content: items })
+})
+
+// 6.根据openid和pid更新一条课程学习关系表的记录
+router.post('/updateStudyProjectRecord', async (req, res) => {
+  const { temp_start_time, temp_end_time, study_time, pid } = req.body
+  const openid = req.headers.openid
+  const ss = new studentService()
+  const update_item = { temp_start_time: handleDate(temp_start_time), temp_end_time: handleDate(temp_end_time), study_time: study_time, openid: openid, pid: pid }
+  const result = await ss.updateStudyProjectRecord(update_item)
+  if (result.affectedRows > 0) {
+    res.json({ code: 200 })
+  } else {
+    res.json({ code: 200, msg: '更新失败'})
   }
 })
 

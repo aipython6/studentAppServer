@@ -20,8 +20,16 @@ class studentService {
     return this.studentImpl.getIsStudy(data)
   }
 
-  studyProjectRecord(data) {
-    return this.studentImpl.studyProjectRecord(data)
+  setStudyProjectRecord(data) {
+    return this.studentImpl.setStudyProjectRecord(data)
+  }
+
+  getStudyProjectRecord(data) {
+    return this.studentImpl.getStudyProjectRecord(data)
+  }
+
+  updateStudyProjectRecord(data) {
+    return this.studentImpl.updateStudyProjectRecord(data)
   }
 
 }

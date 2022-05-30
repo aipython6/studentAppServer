@@ -53,12 +53,12 @@ class studentImpl {
   // 获取openid所有收藏的课本列表
   getCollectedBooks({ openid }) {
     const sql = `select c.bid, c.create_time,c.name, c.publishedName,c.coverImg,c.clickNum,
-    (case when d.bid is not null then '已学习' else '未学习' end) status
+    (case when d.pid is not null then '已学习' else '未学习' end) status
     from 
     (
-    select a.create_time,a.status, b.bid, b.name, b.publishedName,b.coverImg, b.clickNum from student_collect_books a left join books b on a.bid=b.bid
+    select a.create_time,a.status, b.name, b.publishedName,b.coverImg, b.clickNum, b.bid from student_collect_books a left join books b on a.bid=b.bid
     where a.openid = '${openid}'
-    )c left join student_study_books d on c.bid=d.bid`
+    ) c left join student_study_books d on c.bid=d.pid`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -90,10 +90,38 @@ class studentImpl {
   }
 
   //2.用户学习,添加一条新记录到课程学习关系表中 
-  studyProjectRecord(data) {
+  setStudyProjectRecord(data) {
     const sql = `insert into student_study_books set ?`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, data, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+  // 根据openid和bid从课程学习关系表获取一条记录
+  getStudyProjectRecord({ openid, pid }) {
+    const sql = `select * from student_study_books where openid='${openid}' and pid = ${pid} `
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  updateStudyProjectRecord(data) {
+    const { temp_start_time, temp_end_time, study_time, openid, pid } = data
+    const sql = `update student_study_books set temp_start_time = '${temp_start_time}', 
+    temp_end_time = '${temp_end_time}', study_time = ${study_time} where openid = '${openid}' and pid = ${pid}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
