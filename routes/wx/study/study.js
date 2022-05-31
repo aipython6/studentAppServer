@@ -48,7 +48,7 @@ router.get('/getBookTypeList', async (req, res) => {
   const wps = new wechatProjectService()
   const { content } = await wps.getBookTypeList(Number.parseInt(sid))
   const items = content.map(item => {
-    return { btid: item.btid, name: item.name, num: item.num}
+    return { btid: item.btid, name: item.name, num: item.num }
   })
   res.json({ code: 200, content: items })
 })

@@ -111,7 +111,7 @@ router.get('/deleteStudyProject', async (req, res) => {
   const ss = new studentService()
   const result = await ss.deleteStudyProject({ id: id })
   if (result.affectedRows > 0) {
-    res.json({ code: 200 })
+    res.json({ code: 200, msg: '已删除' })
   } else {
     res.json({ code: 200, msg: '更新失败'})
   }
@@ -121,5 +121,19 @@ router.get('/getStudentNumFromStudyProject', async (req, res) => {
   const ss = new studentService()
   const { content } = await ss.getStudentNumFromStudyProject()
   res.json({ code: 200, num: content[0].num })
+})
+
+// 获取今日战果数据
+router.get('/getTodayStudyProject', async (req, res) => {
+  const openid = req.headers.openid
+  const ss = new studentService()
+  const { content } = await ss.getTodayStudyProject({ openid: openid })
+  const items = content.map(item => {
+    return {
+      name: item.name, sid: item.sid, bgColor: item.bgColor
+    }
+  })
+  console.log(openid)
+  res.json({ code: 200, content: items })
 })
 module.exports = router;

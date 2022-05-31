@@ -43,5 +43,9 @@ class studentService {
   getStudentNumFromStudyProject() {
     return this.studentImpl.getStudentNumFromStudyProject()
   }
+
+  getTodayStudyProject(data) {
+    return this.studentImpl.getTodayStudyProject(data)
+  }
 }
 module.exports = studentService

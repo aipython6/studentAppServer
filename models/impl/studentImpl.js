@@ -171,6 +171,27 @@ class studentImpl {
       })
     })
   }
+
+  // 获取今日战果数据,查询今天课程学习的前3条记录
+  getTodayStudyProject({ openid }) {
+    const sql = `select e.sid,f.name,f.bgColor from 
+    (
+    select c.*,d.sid from 
+    (
+    select a.pid,b.btid from student_study_books a left join books b on a.pid = b.bid where openid = '${openid}'
+    and (TO_DAYS(temp_end_time)-TO_DAYS(NOW()))=0 order by temp_end_time desc limit 3
+    )c left join bookType d on c.btid=d.btid
+    ) e left join secondProject f on e.sid=f.sid`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = studentImpl
