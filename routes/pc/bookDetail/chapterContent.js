@@ -50,7 +50,7 @@ router.get('/all', async (req, res) => {
   const items = content.map(item => {
     return {
       ccid: item.ccid, pname: item.pname, url: item.url, enabled: item.enabled === 1 ? true : false,
-      create_time: handleDate(item.create_time), create_by: item.create_by
+      create_time: handleDate(item.create_time), create_by: item.create_by, type: item.type === 0 ? '章节内容' : '练习题'
     }
   })
   res.json({ code: 200, content: items, total: total})
@@ -59,13 +59,12 @@ router.get('/all', async (req, res) => {
 router.post('/add', async (req, res) => {
   const data = req.body
   // 0表示课本内容，1表示练习题
-  const type = 0
   const create_by = req.headers.username
   const chaptercontentService = new chapterContentService()
   // 添加多条记录的数据格式:data[[item1],[item2],...]
   const insert_item = []
   for (let item of data.urls) {
-    let t = [ Number.parseInt(data.bid), item, create_by, handleDate(new Date()), data.enabled === true ? 1 : 0, type ]
+    let t = [ Number.parseInt(data.bid), item, create_by, handleDate(new Date()), data.enabled === true ? 1 : 0, data.type ]
     insert_item.push(t)
     t = []
   }

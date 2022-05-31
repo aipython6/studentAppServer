@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const studentService = require('../../../models/service/studentService')
+const exerciseService = require('../../../models/service/exerciseService')
 const { handleDate, SecondsToMinutes } = require('../../../utils/handleDate')
 
 // 学生收藏、取消收藏、学习记录的相关路由
@@ -45,7 +46,6 @@ router.get('/getCollectedBooks', async (req, res) => {
 // 4.用户学习课程,添加一条新纪录到课程学习关系表
 router.post('/setStudyProjectRecord', async (req, res) => {
   const { bid, start_time, end_time, study_time, temp_start_time, temp_end_time, pid } = req.body
-  console.log(req.body)
   const openid = req.headers.openid
   const ss = new studentService()
   const insert_item = { 
@@ -116,7 +116,7 @@ router.get('/deleteStudyProject', async (req, res) => {
     res.json({ code: 200, msg: '更新失败'})
   }
 })
-
+// 获取正在学习课程的学生数量
 router.get('/getStudentNumFromStudyProject', async (req, res) => {
   const ss = new studentService()
   const { content } = await ss.getStudentNumFromStudyProject()
@@ -133,7 +133,28 @@ router.get('/getTodayStudyProject', async (req, res) => {
       name: item.name, sid: item.sid, bgColor: item.bgColor
     }
   })
-  console.log(openid)
   res.json({ code: 200, content: items })
 })
+
+
+// 二、学生做题的相关路由
+router.post('/setExerciseRecord', async (req, res) => {
+  const { bid, start_time, end_time, study_time, temp_start_time, temp_end_time, pid } = req.body
+  const openid = req.headers.openid
+  const es = new exerciseService()
+  const insert_item = { 
+    bid: Number.parseInt(bid), openid: openid, start_time: handleDate(start_time), end_time: handleDate(end_time), 
+    study_time: study_time, temp_start_time: handleDate(temp_start_time), 
+    temp_end_time: handleDate(temp_end_time), pid: Number.parseInt(pid)
+  }
+  const result = await es.setExerciseRecord(insert_item)
+  if (result.affectedRows > 0) {
+    res.json({ code: 200 })
+  } else {
+    res.json({ code: 200, msg: '添加失败'})
+  }
+})
+
+// 2.
+
 module.exports = router;
