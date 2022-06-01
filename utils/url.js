@@ -28,6 +28,11 @@ const URL = {
   linkCoverImgUpload: path.join(__dirname, '../public/images/settings/wechat/link/'),
   // 下载link的背景图片
   linkCoverImgDownload: base_url + 'images/settings/wechat/link/',
+
+  // 上传OCR图片
+  OCRImgUpload: path.join(__dirname, '../public/images/ocr/'),
+  // 下载OCR图片
+  OCRImgDownload: base_url + 'images/ocr/'
 }
 
 module.exports = URL

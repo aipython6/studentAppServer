@@ -138,13 +138,14 @@ router.get('/getTodayStudyProject', async (req, res) => {
 
 
 // 二、学生做题的相关路由
+// 1.添加一条记录
 router.post('/setExerciseRecord', async (req, res) => {
-  const { bid, start_time, end_time, study_time, temp_start_time, temp_end_time, pid } = req.body
+  const { bid, start_time, end_time, exercise_time, temp_start_time, temp_end_time, pid } = req.body
   const openid = req.headers.openid
   const es = new exerciseService()
   const insert_item = { 
     bid: Number.parseInt(bid), openid: openid, start_time: handleDate(start_time), end_time: handleDate(end_time), 
-    study_time: study_time, temp_start_time: handleDate(temp_start_time), 
+    exercise_time: exercise_time, temp_start_time: handleDate(temp_start_time), 
     temp_end_time: handleDate(temp_end_time), pid: Number.parseInt(pid)
   }
   const result = await es.setExerciseRecord(insert_item)
@@ -155,6 +156,53 @@ router.post('/setExerciseRecord', async (req, res) => {
   }
 })
 
-// 2.
+// 2.获取一条记录
+router.get('/getExerciseRecord', async (req, res) => {
+  const { pid } = req.query
+  const openid = req.headers.openid
+  const es = new exerciseService()
+  const { content } = await es.getExerciseRecord({ openid: openid, pid: pid })
+  const items = content.map(item => {
+    return {
+      bid: item.bid, start_time: item.start_time, exercise_time: item.exercise_time,
+      temp_start_time: item.temp_start_time, temp_end_time: item.temp_end_time
+    }
+  })
+  res.json({ code: 200, content: items })
+})
+
+// 3.更新一条记录
+router.post('/updateExerciseRecord', async (req, res) => {
+  const { temp_start_time, temp_end_time, exercise_time, pid } = req.body
+  const openid = req.headers.openid
+  const es = new exerciseService()
+  const update_item = { temp_start_time: handleDate(temp_start_time), temp_end_time: handleDate(temp_end_time), exercise_time: exercise_time, openid: openid, pid: pid }
+  const result = await es.updateExerciseRecord(update_item)
+  if (result.affectedRows > 0) {
+    res.json({ code: 200 })
+  } else {
+    res.json({ code: 200, msg: '更新失败'})
+  }
+})
+
+// 4.获取今日做题数据
+router.get('/getTodayExerciseList', async (req, res) => {
+  const openid = req.headers.openid
+  const es = new exerciseService()
+  const { content } = await es.getTodayExerciseList({ openid: openid })
+  const items = content.map(item => {
+    return {
+      name: item.name, sid: item.sid, bgColor: item.bgColor
+    }
+  })
+  res.json({ code: 200, content: items })
+})
+
+// 5.获取做题的学生数量
+router.get('/getStudentNumFromExerciseProject', async (req, res) => {
+  const es = new exerciseService()
+  const { content } = await es.getStudentNumFromExerciseProject()
+  res.json({ code: 200, num: content[0].num })
+})
 
 module.exports = router;

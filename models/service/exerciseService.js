@@ -17,5 +17,13 @@ class exerciseService {
     return this.exerciseImpl.updateExerciseRecord(data)
   }
 
+  getTodayExerciseList(data) {
+    return this.exerciseImpl.getTodayExerciseList(data)
+  }
+
+  getStudentNumFromExerciseProject() {
+    return this.exerciseImpl.getStudentNumFromExerciseProject()
+  }
+
 }
 module.exports = exerciseService
