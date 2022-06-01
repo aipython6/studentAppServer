@@ -76,6 +76,19 @@ class exerciseImpl {
       })
     })
   }
+
+  deleteStudyRecord({ id }) {
+    const sql = `delete from student_exercise_books where id = ${id}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = exerciseImpl

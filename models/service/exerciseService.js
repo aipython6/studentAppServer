@@ -25,5 +25,9 @@ class exerciseService {
     return this.exerciseImpl.getStudentNumFromExerciseProject()
   }
 
+  deleteStudyRecord(data) {
+    return this.exerciseImpl.deleteStudyRecord(data)
+  }
+
 }
 module.exports = exerciseService

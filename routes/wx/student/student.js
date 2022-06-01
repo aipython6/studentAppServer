@@ -185,6 +185,7 @@ router.post('/updateExerciseRecord', async (req, res) => {
   }
 })
 
+
 // 4.获取今日做题数据
 router.get('/getTodayExerciseList', async (req, res) => {
   const openid = req.headers.openid
@@ -203,6 +204,18 @@ router.get('/getStudentNumFromExerciseProject', async (req, res) => {
   const es = new exerciseService()
   const { content } = await es.getStudentNumFromExerciseProject()
   res.json({ code: 200, num: content[0].num })
+})
+
+// 6. 删除学习记录
+router.get('/deleteStudyRecord', async (req, res) => {
+  const { id } = req.query
+  const es = new exerciseService()
+  const result = await es.deleteStudyRecord({ id: id })
+  if (result.affectedRows > 0) {
+    res.json({ code: 200, msg: '已删除' })
+  } else {
+    res.json({ code: 200, msg: '更新失败'})
+  }
 })
 
 module.exports = router;

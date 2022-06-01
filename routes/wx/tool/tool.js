@@ -18,9 +18,12 @@ router.post('/upload', uploadObj.array('file'), async (req, res) => {
     const suffix = path.basename(e.path)
     const newname = uuid + suffix
     fs.rename(uploadUrl + basename, uploadUrl + newname, err => {})
-    return { url: downloadUrl + newname }
+    return { url: downloadUrl + newname, fullPath: uploadUrl + newname }
   })
-  res.json({ code: 200, content: temp[0], msg: '上传成功' })
+  const { fullPath } = temp[0]
+  const obj = await OCRHandle(fullPath)
+  const words = obj.words_result.map(e => e.words)
+  res.json({ code: 200, words: words.join('') })
 })
 
 router.get('/getSessionKey', async (req, res, next) => {

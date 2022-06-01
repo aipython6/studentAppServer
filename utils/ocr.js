@@ -2,6 +2,7 @@ const https = require('https')
 const qs = require('qs')
 const fs = require('fs')
 const iconv = require('iconv-lite')
+const request = require('request')
 
 const param = qs.stringify({
   'grant_type': 'client_credentials',
@@ -37,27 +38,29 @@ const getAccessToken = () => {
 
 // 根据图片地址识别图片文字,@param:path-图片路径
 const base64 = (path) => {
-  const base64 = Buffer(path).toString('base64')
-  return base64
+  return new Promise(resolve => setTimeout(() => {
+    const readLable = fs.readFileSync(path, 'binary')
+    resolve(Buffer.from(readLable, 'binary').toString('base64'))
+  }, 100))
 }
 
 const OCRHandle = async (path) => {
-  const base = base64(path)
-  const access_token = await getAccessToken()
-  const url = 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic'
+  const base = await base64(path)
+  const { access_token } = await getAccessToken()
+  const url = 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic?access_token=' + access_token
   const params = { 'image': base }
-  const req_url = url + '?access_token=' + access_token
-  const headers = { 'content-type': 'application/x-www-form-urlencoded' }
-  const req = https.get({
-    hostname: 'https://aip.baidubce.com',
-    path: '/rest/2.0/ocr/v1/accurate_basic?access_token=' + access_token,
-    params: params,
-    headers: headers,
-    agent: false
-  }, res => {
-    res.on('data', data => {
-      const t = JSON.parse(data)
-      console.log(t)
+  const options = {
+    url: url,
+    form: params,
+    headers: { 'content-type': 'application/x-www-form-urlencoded' }
+  };
+  return new Promise((resolve, reject) => {
+    request.post(options, (err, res, body) => {
+      if (!err && res.statusCode === 200) {
+        const json = res.body
+        const obj = JSON.parse(json)
+        resolve(obj)
+      }
     })
   })
 }
