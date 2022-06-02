@@ -41,6 +41,16 @@ router.get('/allRegionWebsite', async (req, res, next) => {
   res.json({ code: 200, content: items  })
 })
 
+router.post('/updateClickNum', async (req, res) => {
+  const { id, clickNum } = req.body
+  let t = Number.parseInt(clickNum)
+  t++
+  const update_item = { id: id, num: t }
+  const ls = new linkService(update_item)
+  const result = await ls.updateClickNum(update_item)
+  res.json({ code: 200 })
+})
+
 router.get('/getImages', async (req, res, next) => {
   const { type } = req.query
   const is = new imageService()

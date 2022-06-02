@@ -50,10 +50,15 @@ app.use(async (req, res, next) => {
     const t = req.headers.authorization
     const username = req.headers.username
     if (t && username) {
-      if (!(await token.verify(t, username))) {
-        res.json({ code: 200, msg: 'token验证失败' })
-      } else {
-        return next()
+      try {
+        if (!(await token.verify(t, username))) {
+          res.json({ code: 200, msg: 'token验证失败' })
+        } else {
+          return next()
+        }
+      } catch (err) {
+        const error = Object.assign({}, err, { status: 401 })
+        res.status(401).json(error)
       }
     }
   }

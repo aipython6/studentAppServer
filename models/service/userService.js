@@ -15,6 +15,18 @@ class userService {
   add(data) {
     return this.userImpl.add(data)
   }
+
+  edit(data) {
+    return this.userImpl.edit(data)
+  }
+
+  all(data) {
+    return this.userImpl.all(data)
+  }
+
+  del(id) {
+    return this.userImpl.del(id)
+  }
 }
 
 module.exports = userService

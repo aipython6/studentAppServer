@@ -4,8 +4,8 @@ class deptService {
   constructor() {
     this.deptImpl = new deptImpl()
   }
-  all() {
-    return this.deptImpl.all()
+  all(data) {
+    return this.deptImpl.all(data)
   }
   get(id) {
     return this.deptImpl.get(id)

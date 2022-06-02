@@ -1,12 +1,19 @@
 const mysqlConnect = require('../../database/mysql_config')
 
 class deptImpl {
-  all() {
+  all(data) {
+    const { page, size } = data
     const sql = `SELECT * FROM depts`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
-          resolve(result)
+          const total = result.length
+          let dicts = result
+          if (page && size) {
+            const pageList = dicts.filter((item, index) => index < size * page && index >= size * (page - 1))
+            dicts = pageList
+          }
+          resolve({ content: dicts, total: total })
         } else {
           reject(err)
         }
@@ -41,8 +48,8 @@ class deptImpl {
     })
   }
   edit(data) {
-    const { id, deptname, enabled, update_time } = data    
-    const sql = `UPDATE depts SET deptname = '${deptname}', enabled = ${enabled}, update_time = ${update_time} WHERE id = ${id}`
+    const { deptid, deptname, enabled, update_time } = data    
+    const sql = `UPDATE depts SET deptname = '${deptname}', enabled = ${enabled}, update_time = ${update_time} WHERE id = ${deptid}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -53,8 +60,8 @@ class deptImpl {
       })
     })
   }
-  del(id) {
-    const sql = `DELETE FROM depts WHERE id = ${id}`
+  del(deptid) {
+    const sql = `DELETE FROM depts WHERE id = ${deptid}`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {

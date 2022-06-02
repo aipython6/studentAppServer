@@ -5,14 +5,15 @@ const pass = require('../../../utils/password')
 const deptService = require('../../../models/service/deptService')
 
 router.get('/all', async (req, res) => {
+  const { page, limit } = req.query
   const deptservice = new deptService()
-  const depts = await deptservice.all()
-  const content = depts.map(e => {
+  const { content, total } = await deptservice.all({ page: Number.parseInt(page), size: Number.parseInt(limit) })
+  const items = content.map(e => {
     return {
-      id: e.id, deptname: e.deptname, create_tiem: e.create_tiem, enabled: e.enabled === 1 ? true : false
+      deptid: e.id, deptname: e.deptname, create_time: handleDate(e.create_time), enabled: e.enabled === 1 ? true : false
     }
   })
-  res.json({ code: 200, content: content })
+  res.json({ code: 200, content: items, total: total })
 })
 
 router.get('/get/:id', async (req, res) => {
@@ -42,8 +43,8 @@ router.post('/add', async (req, res) => {
 })
 
 router.put('/edit', async (req, res) => {
-  const { id, deptname, enabled } = req.body
-  const update = { id: id, deptname: deptname, enabled: enabled, update_time: handleDate(new Date()) }
+  const { deptid, deptname, enabled } = req.body
+  const update = { deptid: deptid, deptname: deptname, enabled: enabled, update_time: handleDate(new Date()) }
   const deptservice = new deptService()
   const result = await deptservice.edit(update)
   if (result.affectedRows > 0) {
@@ -54,9 +55,9 @@ router.put('/edit', async (req, res) => {
 })
 
 router.delete('/del', async (req, res) => {
-  const { id } = req.body
+  const { deptid } = req.body
   const deptservice = new deptService()
-  const result = await deptservice.del(id)
+  const result = await deptservice.del(deptid)
   if (result.affectedRows > 0) {
     res.json({ code: 200, msg: '添加成功' })
   } else {

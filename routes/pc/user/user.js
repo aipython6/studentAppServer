@@ -48,7 +48,9 @@ router.post('/logout', async (req, res) => {
 
 // 添加用户
 router.post('/add', async (req, res) => {
-  const { username, password, email, deptid, gender, role } = req.body
+  const { username, email, deptid, gender, role } = req.body
+  // 默认密码
+  const password = '123456'
   const userservice = new userService()
   const user = await userservice.findUserByUsername({ username: username })
   // 用户名不能相同
@@ -56,9 +58,9 @@ router.post('/add', async (req, res) => {
     const passEncode = await pass.passEncode(password)
     const insert = {
       username: username, password: passEncode,
-      deptid: deptid, gender: gender, email: email,
+      deptid: deptid, gender: gender === 1 ? '女' : '男', email: email,
       enabled: 1, create_time: handleDate(new Date()),
-      avatar: URL.avatarDefaultUrl, loginNum: 0, role: role
+      avatar: URL.avatarDefaultUrl, loginNum: 0, role: role === 0 ? 'admin' : 'normal'
     }
     const result = await userservice.add(insert)
     if (result.affectedRows > 0) {
@@ -68,6 +70,48 @@ router.post('/add', async (req, res) => {
     }
   } else {
     res.json({ code: 200, msg: '添加失败,要添加的用户已经存在,请重新添加' })
+  }
+})
+
+router.get('/all', async (req, res) => {
+  const { page, limit } = req.query
+  const params = { page: Number.parseInt(page), size: Number.parseInt(limit) }
+  const userservice = new userService()
+  const { content, total } = await userservice.all(params)
+  const items = content.map(item => {
+    return {
+      uid: item.uid, username: item.username, email: item.email, create_time: handleDate(item.create_time),
+      enabled: item.enabled === 1 ? true: false, role: item.role, deptname: item.deptname,
+      gender: item.gender
+    } 
+  })
+  res.json({ code: 200, content: items, total: total })
+})
+
+router.put('/edit', async (req, res) => {
+  const { deptid, username, enabled, uid, role, gender } = req.body
+  const userservice = new userService()
+  const update_item = {
+    uid: Number.parseInt(uid), deptid: Number.parseInt(deptid), username: username,
+    enabled: enabled === true ? 1 : 0,
+    update_time: handleDate(new Date()), role: role, gender:gender
+  }
+  const result = await userservice.edit(update_item)
+  if (result.affectedRows > 0) {
+    res.json({ code: 200, msg: '更新成功' })
+  } else {
+    res.json({ code: 200, msg: '更新失败'})
+  }
+})
+
+router.delete('/del', async (req, res) => {
+  const { uid } = req.query
+  const userservice = new userService()
+  const result = await userservice.del(Number.parseInt(uid))
+  if (result.affectedRows > 0) {
+    res.json({ code: 200, msg: '删除成功' })
+  } else {
+    res.json({ code: 200, msg: '删除失败'})
   }
 })
 

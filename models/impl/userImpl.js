@@ -43,5 +43,52 @@ class userImpl {
       })
     })
   }
+  all(data) {
+    const { page, size } = data
+    const sql = `select a.*, b.deptname from users a left join depts b on a.deptid=b.id`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          const total = result.length
+          let dicts = result
+          if (page && size) {
+            const pageList = dicts.filter((item, index) => index < size * page && index >= size * (page - 1))
+            dicts = pageList
+          }
+          resolve({ content: dicts, total: total })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  edit(data) {
+    const { uid, username, gender, role, update_time, deptid, enabled } = data
+    const sql = `update users set username='${username}', gender = '${gender}',
+    role='${role}', update_time = ${update_time}, deptid = ${deptid},enabled=${enabled} where uid = ${uid}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+  
+  del(id) {
+    const sql = `delete from users where uid = ${id}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 module.exports = userImpl

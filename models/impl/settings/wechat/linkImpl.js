@@ -134,6 +134,19 @@ class linkImpl {
       })
     })
   }
+
+  updateClickNum({ id, num }) {
+    const sql = `update links set clickNum= ${num} where lid = ${id}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = linkImpl

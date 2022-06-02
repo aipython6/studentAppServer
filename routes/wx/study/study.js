@@ -79,6 +79,16 @@ router.get('/getBookInfoBybid', async (req, res) => {
   res.json({ code: 200, content: items[0] })
 })
 
+// 根据bid更新clickNum
+router.post('/updateClickNum', async (req, res) => {
+  const { bid, clickNum } = req.body
+  let t = Number.parseInt(clickNum)
+  t++
+  const wps = new wechatProjectService()
+  await wps.updateClickNum({ bid: Number.parseInt(bid), clickNum: t })
+  res.json({ code: 200 })
+})
+
 // 根据bid获取其下所有1级和2级章节的内容
 router.get('/getBookChapterList', async (req, res) => {
   const { bid } = req.query

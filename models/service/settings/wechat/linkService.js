@@ -37,5 +37,9 @@ class linkService {
   allLinksByProvince() {
     return this.linkImpl.allLinksByProvince()
   }
+
+  updateClickNum(data) {
+    return this.linkImpl.updateClickNum(data)
+  }
 }
 module.exports = linkService

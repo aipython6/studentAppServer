@@ -26,11 +26,4 @@ router.post('/upload', uploadObj.array('file'), async (req, res) => {
   res.json({ code: 200, words: words.join('') })
 })
 
-router.get('/getSessionKey', async (req, res, next) => {
-  OCRHandle()
-  // console.log(access_token)
-  // getSessionKey()
-  res.json({ code: 200 })
-});
-
 module.exports = router;

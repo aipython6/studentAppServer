@@ -98,6 +98,20 @@ class wechatProjectImpl {
     })
   }
 
+  // 更新clickNum
+  updateClickNum({ bid, clickNum }) {
+    const sql = `update books set clickNum=${clickNum} where bid = ${bid}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
   getChapterConentList(bid, type) {
     // type:0=表示章节内容,1=练习题
     const sql = `select * from chapterContent where bid = ${bid} and type = ${type}`
