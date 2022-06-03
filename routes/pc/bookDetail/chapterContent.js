@@ -50,7 +50,7 @@ router.get('/all', async (req, res) => {
   const items = content.map(item => {
     return {
       ccid: item.ccid, pname: item.pname, url: item.url, enabled: item.enabled === 1 ? true : false,
-      create_time: handleDate(item.create_time), create_by: item.create_by, type: item.type === 0 ? '章节内容' : '练习题'
+      create_time: handleDate(item.create_time), create_by: item.create_by, type: item.type
     }
   })
   res.json({ code: 200, content: items, total: total})
@@ -77,12 +77,12 @@ router.post('/add', async (req, res) => {
 })
 
 router.put('/edit', async (req, res) => {
-  const { ccid, name, enabled, url } = req.body
+  const { ccid, name, enabled, url, type } = req.body
   const chaptercontentService = new chapterContentService()
   const create_by = req.headers.username
   const update_item = {
     ccid: ccid, name: name, enabled: enabled === true ? 1 : 0,
-    update_time: handleDate(new Date()), create_by: create_by, url: url
+    update_time: handleDate(new Date()), create_by: create_by, url: url, type: type
   }
   const result = await chaptercontentService.edit(update_item)
   if (result.affectedRows > 0) {

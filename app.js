@@ -43,7 +43,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(async (req, res, next) => {
   const url = req.url
   // PC端放行登录操作
-  const pc_whiteList = ['/api/user/login']
+  const pc_whiteList = ['/api/user/login', '/api/user/add']
+  // const pc_whiteList = ['/api/user/login']
   if (pc_whiteList.includes(url)) {
     return next()
   } else {

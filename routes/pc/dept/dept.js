@@ -65,5 +65,17 @@ router.delete('/del', async (req, res) => {
   }
 })
 
+router.post('/blurry', async (req, res) => {
+  const { name, page, limit } = req.body
+  const deptservice = new deptService()
+  const { content, total } = await deptservice.all({ name: name, page: page, size: limit })
+  const items = content.map(item => {
+    return {
+      deptid: item.id, deptname: item.deptname, create_time: handleDate(item.create_time), enabled: item.enabled === 1 ? true : false
+    } 
+  })
+  res.json({ code: 200, content: items, total: total })
+})
+
 
 module.exports = router

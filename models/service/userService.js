@@ -4,6 +4,15 @@ class userService {
   constructor() {
     this.userImpl = new userImpl()
   }
+
+  getRoles() {
+    return this.userImpl.getRoles()
+  }
+
+  getRoleNameByid(id) {
+    return this.userImpl.getRoleNameByid(id)
+  }
+
   findUserByUsername(data) {
     return this.userImpl.findUserByUsername(data)
   }
@@ -27,6 +36,15 @@ class userService {
   del(id) {
     return this.userImpl.del(id)
   }
+
+  updateAvatar(data) {
+    return this.userImpl.updateAvatar(data)
+  }
+
+  updatePass(data) {
+    return this.userImpl.updatePass(data)
+  }
+
 }
 
 module.exports = userService

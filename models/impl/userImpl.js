@@ -1,6 +1,34 @@
 const mysqlConnect = require('../../database/mysql_config')
 
 class userImpl {
+
+  getRoles() {
+    const sql = `select rid, name from roles`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve({ content: result })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  getRoleNameByid(id) {
+    const sql = `select name from roles where rid = ${id}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          const name = result[0].name
+          resolve({ roleName: name })
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
   // 根据username查询用户
   findUserByUsername({ username }) {
     const sql = `SELECT a.*,b.deptname FROM users a LEFT JOIN depts b ON a.deptid = b.id WHERE a.username = '${username}'`
@@ -44,8 +72,11 @@ class userImpl {
     })
   }
   all(data) {
-    const { page, size } = data
-    const sql = `select a.*, b.deptname from users a left join depts b on a.deptid=b.id`
+    const { page, size, name } = data
+    let sql = `select a.*, b.deptname from users a left join depts b on a.deptid=b.id `
+    if (name) {
+      sql += ` WHERE a.username = '${name}'`
+    }
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
@@ -80,6 +111,36 @@ class userImpl {
   
   del(id) {
     const sql = `delete from users where uid = ${id}`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 更新头像
+  updateAvatar(data) {
+    const { url, username } = data
+    const sql = `update users set avatar = '${url}' where username = '${username}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 更新密码
+  updatePass(data) {
+    const { password, username } = data
+    const sql = `update users set password = '${password}' where username = '${username}'`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {

@@ -52,8 +52,8 @@ class chapterContentImpl {
   }
 
   edit(data) {
-    const { url, update_time, ccid, enabled } = data
-    const sql = ` update chapterContent set url = '${url}', update_time='${update_time}', enabled = ${enabled} where ccid = ${ccid} `
+    const { url, update_time, ccid, enabled, type } = data
+    const sql = ` update chapterContent set url = '${url}', update_time='${update_time}', enabled = ${enabled}, type = ${type} where ccid = ${ccid} `
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {

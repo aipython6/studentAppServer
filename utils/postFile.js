@@ -72,6 +72,21 @@ class postFile {
     const uploader = multer({ storage: storage })
     return uploader
   }
+
+  // 后台用户头像上传
+  postAvatar() {
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, URL.avatarUpload)
+      },
+      filename: (req, file, cb) => {
+        const filename = file.originalname
+        cb(null, filename)
+      }
+    })
+    const uploader = multer({ storage: storage })
+    return uploader
+  }
 }
 
 const upload = new postFile()

@@ -32,7 +32,12 @@ const URL = {
   // 上传OCR图片
   OCRImgUpload: path.join(__dirname, '../public/images/ocr/'),
   // 下载OCR图片
-  OCRImgDownload: base_url + 'images/ocr/'
+  OCRImgDownload: base_url + 'images/ocr/',
+
+  // 上传后台用户头像
+  avatarUpload: path.join(__dirname, '../public/images/avatar/'),
+  // 下载后台用户头像
+  avataDownload: base_url + 'images/avatar/'
 }
 
 module.exports = URL

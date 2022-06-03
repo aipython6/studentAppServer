@@ -2,8 +2,11 @@ const mysqlConnect = require('../../database/mysql_config')
 
 class deptImpl {
   all(data) {
-    const { page, size } = data
-    const sql = `SELECT * FROM depts`
+    const { page, size, name } = data
+    let sql = `SELECT * FROM depts`
+    if (name) {
+      sql += ` WHERE deptname = '${name}'`
+    }
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
