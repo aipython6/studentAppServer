@@ -99,9 +99,9 @@ class bookImpl {
             sql += `and b.name like '%${name}%'`
             break
         }
-      } else if (create_time.length > 0){
-        const s = create_time[0] + ' :00:00:00'
-        const e = create_time[1] + '23:59:59'
+      } else if (create_time.length > 0 && create_time[0] !== '' && create_time[1] !== '') {
+        const s = create_time[0] + ' 00:00:00'
+        const e = create_time[1] + ' 23:59:59'
         sql += `and a.create_time between '${s}' and '${e}'`
       }
     }
