@@ -63,11 +63,15 @@ class bookTypeImpl {
   }
 
   // 根据name或create_time查询
-  queryByBlur({ fullName, create_time=[], page, size }) {
+  queryByBlur({ name, create_time=[], type, page, size }) {
     let sql = `select a.*, b.name as pname from bookType a left join secondProject b on a.sid=b.sid `
-    if(name || (create_time.length > 0)) {
-      if (fullName) {
-        sql += `where a.name like %'${fullName}'%`  
+    if (name || (create_time.length > 0)) {
+      if (name) {
+        if (type === '课本类型') {
+          sql += `where a.name like '%${name}%'`  
+        } else if (type === '上级类目') {
+          sql += `where b.name like '%${name}%'`  
+        }
       } else if (create_time.length > 0){
         const s = create_time[0] + ' :00:00:00'
         const e = create_time[1] + '23:59:59'

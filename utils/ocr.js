@@ -4,6 +4,7 @@ const fs = require('fs')
 const iconv = require('iconv-lite')
 const request = require('request')
 
+// 获取access_token的配置
 const param = qs.stringify({
   'grant_type': 'client_credentials',
   'client_id': 'wWgTMQ6ZiWfAYydlDCquQESu',
@@ -24,8 +25,8 @@ const getAccessToken = () => {
           datas.push(data)
           size +=data.length
         })
-        res.on('end', ()=>{
-          let buff = Buffer.concat(datas,size)
+        res.on('end', () => {
+          let buff = Buffer.concat(datas, size)
           let result = iconv.decode(buff, 'utf8')
           result = JSON.parse(result.trim())
           resolve({ access_token: result.access_token })
@@ -36,7 +37,7 @@ const getAccessToken = () => {
 }
 
 
-// 根据图片地址识别图片文字,@param:path-图片路径
+// 将图片转为base64编码,@param:path-图片路径
 const base64 = (path) => {
   return new Promise(resolve => setTimeout(() => {
     const readLable = fs.readFileSync(path, 'binary')

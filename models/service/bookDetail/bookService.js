@@ -19,5 +19,8 @@ class bookService {
   del(id) {
     return this.bookImpl.del(id)
   }
+  queryByBlur(data) {
+    return this.bookImpl.queryByBlur(data)
+  }
 }
 module.exports = bookService

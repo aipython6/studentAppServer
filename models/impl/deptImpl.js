@@ -5,7 +5,7 @@ class deptImpl {
     const { page, size, name } = data
     let sql = `SELECT * FROM depts`
     if (name) {
-      sql += ` WHERE deptname = '${name}'`
+      sql += ` WHERE deptname like '%${name}%'`
     }
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {

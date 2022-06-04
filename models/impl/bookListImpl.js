@@ -63,11 +63,24 @@ class bookListImpl {
   }
 
   // 根据name或create_time查询
-  queryByBlur({ name='', author='', publishedName='', ISBN='', create_time=[], page, size }) {
+  queryByBlur({ name, type, create_time=[], page, size }) {
     let sql = `select a.*, b.name as pname from bookList a left join secondProject b on a.sid=b.sid `
     if(name || (create_time.length > 0)) {
       if (name) {
-        sql += `where a.name like %'${name}'%`  
+        switch (type) {
+          case '课本名称':
+            sql += `where a.name like '%${name}%'`
+            break;
+          case '编者':
+            sql += `where a.author like '%${name}%'`
+            break
+          case 'ISBN':
+            sql += `where a.ISBN like '%${name}%'`
+            break
+          case '出版社':
+            sql += `where a.publishedName like '%${name}%'`
+            break
+        }
       } else if (create_time.length > 0){
         const s = create_time[0] + ' :00:00:00'
         const e = create_time[1] + '23:59:59'

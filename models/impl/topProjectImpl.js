@@ -65,14 +65,14 @@ class topProjectImpl {
   }
 
   // 根据name或create_time查询
-  queryByBlur({ name, start, end, page, size }) {
+  queryByBlur({ name, create_time=[], page, size }) {
     let sql = `SELECT * FROM topProject `
-    if(name || (start && end)) {
+    if(name || (create_time.length > 0)) {
       if (name) {
-        sql += `where name = '${name}'`  
-      } else if (start && end){
-        const s = start + ' :00:00:00'
-        const e = end + '23:59:59'
+        sql += `where name like '%${name}%'`  
+      } else if (create_time.length > 0){
+        const s = create_time[0] + ' :00:00:00'
+        const e = create_time[1] + '23:59:59'
         sql += `where create_time between '${s}' and '${e}'`
       }
     }

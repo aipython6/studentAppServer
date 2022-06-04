@@ -90,4 +90,22 @@ router.delete('/del', async (req, res) => {
   }
 })
 
+// 6.条件查询
+router.post('/blurry', async (req, res) => {
+  const { name, create_time, page, limit, type } = req.body
+  const data = { name: name, create_time, page: page, size: limit, type: type }
+  const bookservice = new bookService()
+  const { content, total } = await bookservice.queryByBlur(data)
+  const items = content.map(item => {
+    return {
+      bid: item.bid, btid: item.btid, name: item.name, pname: item.pname,
+      create_time: handleDate(item.create_time), enabled: item.enabled === 1 ? true : false,
+      create_by: item.create_by, type: item.type, publishedName: item.publishedName,
+      ISBN: item.ISBN, author: item.author, coverImg: item.coverImg, clickNum: item.clickNum
+    }
+  })
+  res.json({ code: 200, content: items, total: total })
+})
+
+
 module.exports = router

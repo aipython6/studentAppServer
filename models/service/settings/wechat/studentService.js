@@ -7,5 +7,8 @@ class studentService {
   all(params) {
     return this.studentImpl.all(params)
   }
+  queryByBlur(data) {
+    return this.studentImpl.queryByBlur(data)
+  }
 }
 module.exports = studentService

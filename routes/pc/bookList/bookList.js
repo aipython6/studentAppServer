@@ -90,8 +90,8 @@ router.delete('/del', async (req, res) => {
 })
 
 router.post('/blurry', async (req, res) => {
-  const { name, create_time, page, limit, author, publishedName, ISBN } = req.body
-  const data = { name: name, create_time, page: page, size: limit }
+  const { name, create_time, page, limit, type } = req.body
+  const data = { name: name, create_time, page: page, size: limit, type: type }
   const booklistService = new bookListService()
   const { content, total } = await booklistService.queryByBlur(data)
   const items = content.map(item => {

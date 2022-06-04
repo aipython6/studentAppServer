@@ -17,4 +17,19 @@ router.get('/all', async (req, res, next) => {
   res.json({ code: 200, content: items, total: total })
 });
 
+router.post('/blurry', async (req, res) => {
+  const { name, create_time, page, limit, type } = req.body
+  const data = { name: name, create_time, page: page, size: limit, type: type }
+  const ss = new studentService()
+  const { content, total } = await ss.queryByBlur(data)
+  const items = content.map(item => {
+    return {
+      sid: item.sid, username: item.username, create_time: handleDate(item.create_time), age: item.age,
+      nickName: item.nickName, gender: item.gender, email: item.email, professional: item.professional,
+      school: item.school,birthday: item.birthday
+    }
+  })
+  res.json({ code: 200, content: items, total: total })
+})
+
 module.exports = router;

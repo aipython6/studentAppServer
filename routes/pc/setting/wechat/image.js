@@ -41,7 +41,6 @@ router.get('/all', async (req, res, next) => {
 
 router.post('/add', async (req, res) => {
   const { content, url, type, enabled } = req.body
-  console.log(req.body)
   const create_by = req.headers.username
   const imageservice = new imageService()
   const insert_item = {
@@ -64,7 +63,7 @@ router.put('/edit', async (req, res) => {
   const update_item = {
     wid: wid, content: content, enabled: enabled === true ? 1 : 0,
     update_time: handleDate(new Date()), create_by: create_by, url: url,
-    type: type
+    type: Number.parseInt(type)
   }
   const result = await imageservice.edit(update_item)
   if (result.affectedRows > 0) {

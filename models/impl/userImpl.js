@@ -75,7 +75,7 @@ class userImpl {
     const { page, size, name } = data
     let sql = `select a.*, b.deptname from users a left join depts b on a.deptid=b.id `
     if (name) {
-      sql += ` WHERE a.username = '${name}'`
+      sql += ` WHERE a.username like '%${name}%'`
     }
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
