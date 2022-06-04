@@ -160,11 +160,11 @@ class studentImpl {
   }
 
   getStudentNumFromStudyProject() {
-    const sql = `select count(1) as num from student_study_books`
+    const sql = `select openid from student_study_books group by openid`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
-          resolve({ content: result })
+          resolve({ content: result.length })
         } else {
           reject(err)
         }
@@ -174,7 +174,7 @@ class studentImpl {
 
   // 获取今日战果数据,查询今天课程学习的前3条记录
   getTodayStudyProject({ openid }) {
-    const sql = `select e.sid,f.name,f.bgColor from 
+    const sql = `select distinct e.sid,f.name,f.bgColor from 
     (
     select c.*,d.sid from 
     (

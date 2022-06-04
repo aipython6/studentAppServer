@@ -120,7 +120,7 @@ router.get('/deleteStudyProject', async (req, res) => {
 router.get('/getStudentNumFromStudyProject', async (req, res) => {
   const ss = new studentService()
   const { content } = await ss.getStudentNumFromStudyProject()
-  res.json({ code: 200, num: content[0].num })
+  res.json({ code: 200, num: content })
 })
 
 // 获取今日战果数据
@@ -203,7 +203,7 @@ router.get('/getTodayExerciseList', async (req, res) => {
 router.get('/getStudentNumFromExerciseProject', async (req, res) => {
   const es = new exerciseService()
   const { content } = await es.getStudentNumFromExerciseProject()
-  res.json({ code: 200, num: content[0].num })
+  res.json({ code: 200, num: content })
 })
 
 // 6. 删除学习记录

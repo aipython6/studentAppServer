@@ -65,11 +65,11 @@ class exerciseImpl {
   }
 
   getStudentNumFromExerciseProject() {
-    const sql = `select count(1) as num from student_exercise_books`
+    const sql = `select openid from student_exercise_books group by openid`
     return new Promise((resolve, reject) => {
       mysqlConnect.query(sql, (err, result) => {
         if (!err) {
-          resolve({ content: result })
+          resolve({ content: result.length })
         } else {
           reject(err)
         }
