@@ -4,6 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const { handleDate } = require('../../../utils/handleDate')
+const { getWeather } = require('../../../utils/weather')
 const pass = require('../../../utils/password')
 const userService = require('../../../models/service/userService')
 const token = require('../../../utils/token')
@@ -43,6 +44,7 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/info', async (req, res) => {
   const { username } = req.query
+  const { weather } = await getWeather()
   const userservice = new userService()
   const user = await userservice.findUserByUsername({ username: username })
   if (user.length === 1) {
@@ -53,7 +55,7 @@ router.get('/info', async (req, res) => {
       }
     })
     
-    res.json({ code: 200, content: content[0] })
+    res.json({ code: 200, content: content[0], weather: weather })
   } else {
     res.json({ code: 200, msg: '获取用户信息失败'})
   }

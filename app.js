@@ -8,6 +8,9 @@ const token = require('./utils/token')
 const cors = require('cors');
 const cors_instance = require('./utils/cors')
 
+// 测试用的路由
+const testRouter = require('./routes/pc/test/test')
+const toolPcRouter = require('./routes/pc/tool/tool')
 const authRouter = require('./routes/wx/auth/auth')
 const bookRouter = require('./routes/pc/bookDetail/book')
 const bookChapterRouter = require('./routes/pc/bookDetail/bookChapter')
@@ -81,6 +84,8 @@ app.use(async (req, res, next) => {
   }
 })
 
+app.use('/api/test', testRouter)
+app.use('/api/pc/tool', toolPcRouter)
 
 app.use('/auth', authRouter);
 app.use('/api/book', bookRouter)
