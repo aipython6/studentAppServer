@@ -37,7 +37,10 @@ const URL = {
   // 上传后台用户头像
   avatarUpload: path.join(__dirname, '../public/images/avatar/'),
   // 下载后台用户头像
-  avataDownload: base_url + 'images/avatar/'
+  avataDownload: base_url + 'images/avatar/',
+
+  // 获取天气的图片
+  weatherIconDownload: base_url + 'images/weatherIcon/'
 }
 
 module.exports = URL
