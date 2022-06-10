@@ -1,7 +1,7 @@
 // 一些URL的配置
 const path = require('path')
-// const base_url = 'http://localhost:8090/'
-const base_url = 'https://www.and2ui.cn:8090/'
+const base_url = 'http://localhost:8090/'
+// const base_url = 'https://www.and2ui.cn:8090/'
 
 const URL = {
   base_url: base_url,
