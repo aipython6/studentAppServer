@@ -47,5 +47,13 @@ class studentService {
   getTodayStudyProject(data) {
     return this.studentImpl.getTodayStudyProject(data)
   }
+
+  deleteStudyRecordByopenid(data) {
+    return this.studentImpl.deleteStudyRecordByopenid(data)
+  }
+
+  deleteCollectRecordByopenid(data) {
+    return this.studentImpl.deleteCollectRecordByopenid(data)
+  }
 }
 module.exports = studentService

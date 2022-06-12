@@ -3,6 +3,8 @@ const router = express.Router();
 const getOpenId = require('../../../utils/getOpenId')
 const { handleDate }  = require('../../../utils/handleDate')
 const authService = require('../../../models/service/authService')
+const studentService = require('../../../models/service/studentService')
+const exerciseService = require('../../../models/service/exerciseService')
 // 获取微信用户的openid
 router.post('/login', async (req, res, next) => {
   const authservice = new authService()
@@ -40,6 +42,21 @@ router.put('/editUserinfo', async (req, res) => {
     res.json({ code: 200, msg: '更新信息成功' })
   } else {
     res.json({ code: 200, msg: '更新信息失败' })
+  }
+})
+
+// 注销账户
+router.post('/logout', async (req, res) => {
+  const { openid } = req.body
+  const as = new authService()
+  const ss = new studentService()
+  const es = new exerciseService()
+  const res1 = await as.deleteUserinfoByopenid({ openid: openid })
+  const res2 = await ss.deleteStudyRecordByopenid({ openid: openid })
+  const res3 = await ss.deleteCollectRecordByopenid({ openid: openid })
+  const res4 = await es.deleteExerciseRecordByOpenid({ openid: openid })
+  if (res1.affectedRows > 0) {
+    res.json({ code: 200, msg: '您的账户已经注销' })
   }
 })
 

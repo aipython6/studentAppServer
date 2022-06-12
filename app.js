@@ -67,7 +67,7 @@ app.use(async (req, res, next) => {
     }
   }
   // 微信端放行登录操作
-  const wx_whiteList = ['/auth/login', '/api/wx/website', '/api/study', 'api/tool']
+  const wx_whiteList = ['/auth/login', '/api/wx/website', '/api/study', 'api/tool', 'api/student']
   // console.log(url)
   if (isWhiteURL(wx_whiteList, url)) {
     return next()

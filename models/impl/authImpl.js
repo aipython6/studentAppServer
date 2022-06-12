@@ -53,5 +53,19 @@ class authImpl {
       })
     })
   }
+
+  // 根据openid删除个人记录
+  deleteUserinfoByopenid({ openid }) {
+    const sql = `delete from students where where openid = '${openid}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 module.exports = authImpl

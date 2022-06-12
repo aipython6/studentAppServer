@@ -29,6 +29,10 @@ class wechatProjectService {
     return this.wechatProjectImpl.updateClickNum(data)
   }
 
+  updateClickNumSproject(data) {
+    return this.wechatProjectImpl.updateClickNumSproject(data)
+  }
+
   getBookInfoBybid(bid) {
     return this.wechatProjectImpl.getBookInfoBybid(bid)
   }

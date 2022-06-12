@@ -192,6 +192,34 @@ class studentImpl {
       })
     })
   }
+
+  // 根据openid删除学习记录
+  deleteStudyRecordByopenid({ openid }) {
+    const sql  =`delete from student_study_books where openid = '${openid}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
+
+  // 根据openid删除课本收藏记录
+  deleteCollectRecordByopenid({ openid }) {
+    const sql = `delete from student_collect_books where openid = '${openid}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = studentImpl

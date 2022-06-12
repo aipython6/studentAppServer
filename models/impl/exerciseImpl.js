@@ -89,6 +89,20 @@ class exerciseImpl {
       })
     })
   }
+
+  // 根据openid删除做题记录
+  deleteExerciseRecordByOpenid({ openid }) {
+    const sql = `delete from student_exercise_books where openid = '${openid}'`
+    return new Promise((resolve, reject) => {
+      mysqlConnect.query(sql, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  }
 }
 
 module.exports = exerciseImpl

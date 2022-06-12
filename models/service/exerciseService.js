@@ -29,5 +29,9 @@ class exerciseService {
     return this.exerciseImpl.deleteStudyRecord(data)
   }
 
+  deleteExerciseRecordByOpenid(data) {
+    return this.exerciseImpl.deleteExerciseRecordByOpenid(data)
+  }
+
 }
 module.exports = exerciseService
