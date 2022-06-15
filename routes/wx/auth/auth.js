@@ -56,7 +56,7 @@ router.post('/logout', async (req, res) => {
   const res3 = await ss.deleteCollectRecordByopenid({ openid: openid })
   const res4 = await es.deleteExerciseRecordByOpenid({ openid: openid })
   if (res1.affectedRows > 0) {
-    res.json({ code: 200, msg: '您的账户已经注销' })
+    res.json({ code: 200, msg: '你的账户已经注销' })
   }
 })
 

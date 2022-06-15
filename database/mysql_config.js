@@ -4,7 +4,8 @@ const config = {
   host: 'www.and2ui.cn',
   user: 'root',
   password: '6118277ndaNDA',
-  database: 'studentApp',
+  // database: 'studentApp',
+  database: 'studentAppTest',
   useConnectionPool: true,
 }
 
